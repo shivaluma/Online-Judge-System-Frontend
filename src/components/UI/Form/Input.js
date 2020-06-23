@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default ({ target, handleKey, handler, placeholder, type }) => (
+export default ({
+  target,
+  handleKey,
+  handler,
+  placeholder,
+  type,
+  serverCheck,
+}) => (
   <div className='w-full mb-5'>
     <input
       className='w-full px-2 py-3 border border-gray-400 placeholder-gray-500 focus:outline-none focus:border-blue-600 transition-all duration-300'
@@ -14,6 +21,18 @@ export default ({ target, handleKey, handler, placeholder, type }) => (
     {target.error ? (
       <span className='mt-2 text-xs text-red-800 block text-left'>
         {target.errorDesc}
+      </span>
+    ) : null}
+
+    {serverCheck && serverCheck.error ? (
+      <span className='mt-2 text-xs text-red-800 block text-left'>
+        {serverCheck.errorDesc}
+      </span>
+    ) : null}
+
+    {serverCheck && serverCheck.isValid ? (
+      <span className='mt-2 text-xs font-semibold text-green-800 block text-left'>
+        {serverCheck.errorDesc}
       </span>
     ) : null}
   </div>

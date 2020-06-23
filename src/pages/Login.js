@@ -6,7 +6,6 @@ import { FaCode, FaFacebookF, FaGoogle, FaGithub } from 'react-icons/fa';
 import FormSignIn from '../components/UI/FormSignIn';
 import FormSignUp from '../components/UI/FormSignUp';
 import isEmail from 'validator/lib/isEmail';
-import { toast, ToastContainer } from 'react-toastify';
 import API from '../api';
 import 'react-toastify/dist/ReactToastify.css';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -84,7 +83,7 @@ export default withRouter(({ isLoginMode, history }) => {
   }, [mode]);
 
   useEffect(() => {
-    if (user.isLogin) history.push('/');
+    if (user.isLogin) history.replace('/');
   }, [user]);
 
   const loginHandler = async (event) => {
@@ -134,15 +133,6 @@ export default withRouter(({ isLoginMode, history }) => {
     try {
       const response = await API.post('auth/signup', body);
 
-      toast.success('🌟 Register successful!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
       setMode(true);
     } catch (err) {
       if (
@@ -206,27 +196,32 @@ export default withRouter(({ isLoginMode, history }) => {
       });
 
       if (loginResult.status === 200) {
-        toast.success('🌟 Login successful!', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
       }
     } catch (err) {
-      setWrongInfo({
-        status: true,
-        description: err.response.data.message,
-      });
+      console.log(err.response);
+      if (err.response.status === 302) {
+        history.push({
+          pathname: `/accounts/social-login/`,
+          state: {
+            email: err.response.data.email,
+            token: err.response.data.usernameToken,
+          },
+        });
+      } else {
+        setWrongInfo({
+          status: true,
+          description: err.response.data.message,
+        });
+      }
     }
   };
 
   const formChangeHandler = (value, key) => {
     if (wrongInfo && mode) {
-      setWrongInfo(false);
+      setWrongInfo({
+        status: false,
+        description: '',
+      });
     }
     if (key === 'username') {
       const newUsername = { ...formInfo.username };
@@ -281,6 +276,10 @@ export default withRouter(({ isLoginMode, history }) => {
     }
   };
 
+  const socialLoginRedirect = (id) => {
+    history.push(`/accounts/social-login${id}`);
+  };
+
   return (
     <div
       className='w-screen h-screen'
@@ -290,7 +289,7 @@ export default withRouter(({ isLoginMode, history }) => {
       }}
     >
       <Header />
-      <ToastContainer />
+
       <div
         className='mt-32 mx-auto text-center bg-white'
         style={{ width: '400px' }}

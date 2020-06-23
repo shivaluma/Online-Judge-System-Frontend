@@ -4,8 +4,8 @@ import { currentUserQuery } from './recoil/selectors';
 import { userState } from './recoil/atoms';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './assets/style.css';
-import Landing from './pages/Landing';
-import Index from './pages/Index';
+// import Landing from './pages/Landing';
+import SocialLogin from './pages/SocialLogin';
 import Fallback from './components/UI/Fallback';
 const Login = React.lazy(
   () =>
@@ -13,24 +13,49 @@ const Login = React.lazy(
       setTimeout(() => resolve(import('./pages/Login')), 600);
     })
 );
+
+const Index = React.lazy(
+  () =>
+    new Promise((resolve, _) => {
+      setTimeout(() => resolve(import('./pages/Index')), 250);
+    })
+);
+
+const Landing = React.lazy(
+  () =>
+    new Promise((resolve, _) => {
+      setTimeout(() => resolve(import('./pages/Landing')), 250);
+    })
+);
+
 function App() {
   const userQuery = useRecoilValue(currentUserQuery);
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
     if (userQuery) setUser({ isLogin: true, data: userQuery });
-  }, [user, userQuery, setUser]);
+  }, [userQuery, setUser]);
   return (
     <Router>
       <Switch>
-        <Route path='/' exact component={!user ? Landing : Index} />
+        <Route
+          path='/'
+          exact
+          render={() => (
+            <Suspense>{user.isLogin ? <Index /> : <Landing />}</Suspense>
+          )}
+        />
         <Route
           path='/accounts/login'
+          exact
           render={() => (
             <Suspense fallback={<Fallback />}>
               <Login isLoginMode={true} />
             </Suspense>
           )}
         />
+
+        <Route path='/accounts/social-login' component={SocialLogin} />
+
         <Route
           path='/accounts/signup'
           render={() => (

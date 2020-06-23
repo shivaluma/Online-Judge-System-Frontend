@@ -1,4 +1,4 @@
-import { selector, useRecoilState } from 'recoil';
+import { selector } from 'recoil';
 
 import API from '../api';
 
