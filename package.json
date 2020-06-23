@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@welldone-software/why-did-you-render": "^4.2.5",
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -16,6 +17,7 @@
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.3",
     "react-toastify": "^6.0.5",
+    "recoil": "^0.0.10",
     "validator": "^13.0.0"
   },
   "scripts": {

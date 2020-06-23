@@ -27,9 +27,9 @@ export default ({
         placeholder='Password...'
       />
 
-      {wrongInfo && !loading ? (
+      {wrongInfo.status && !loading ? (
         <span className='mt-1 text-xs text-red-800 block text-left'>
-          Invalid username or password.
+          {wrongInfo.description}
         </span>
       ) : null}
 

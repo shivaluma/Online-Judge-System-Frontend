@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
+
 import Header from '../components/UI/Header';
 import { FaCode, FaFacebookF, FaGoogle, FaGithub } from 'react-icons/fa';
 import FormSignIn from '../components/UI/FormSignIn';
@@ -10,8 +11,12 @@ import API from '../api';
 import 'react-toastify/dist/ReactToastify.css';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { GoogleLogin } from 'react-google-login';
-export default ({ isLogin }) => {
-  const [mode, setMode] = useState(isLogin);
+import { userState } from '../recoil/atoms';
+import { withRouter } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+
+export default withRouter(({ isLoginMode, history }) => {
+  const [mode, setMode] = useState(isLoginMode);
   const [formInfo, setFormInfo] = useState({
     username: {
       value: '',
@@ -38,11 +43,49 @@ export default ({ isLogin }) => {
       changed: false,
     },
   });
-  const [wrongInfo, setWrongInfo] = useState(false);
+  const [wrongInfo, setWrongInfo] = useState({
+    status: false,
+    description: '',
+  });
   const [isLoading, setLoading] = useState(false);
+  const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
     document.title = mode ? 'Login' : 'Sign Up';
+    setFormInfo({
+      username: {
+        value: '',
+        error: true,
+        errorDesc: '',
+        changed: false,
+      },
+      email: {
+        value: '',
+        error: true,
+        errorDesc: '',
+        changed: false,
+      },
+      pwd: {
+        value: '',
+        error: true,
+        errorDesc: '',
+        changed: false,
+      },
+      confirmPwd: {
+        value: '',
+        error: true,
+        errorDesc: '',
+        changed: false,
+      },
+    });
+    setWrongInfo({
+      status: false,
+      description: '',
+    });
   }, [mode]);
+
+  useEffect(() => {
+    if (user.isLogin) history.push('/');
+  }, [user]);
 
   const loginHandler = async (event) => {
     event.preventDefault();
@@ -55,7 +98,9 @@ export default ({ isLogin }) => {
 
     try {
       const response = await API.post('auth/login', body);
-      console.log(response);
+
+      setUser({ isLogin: true, data: response.data.user });
+      localStorage.setItem('brosjudge-token', response.data.accessToken);
       toast.success('🌟 Login successful!', {
         position: 'top-right',
         autoClose: 5000,
@@ -66,7 +111,10 @@ export default ({ isLogin }) => {
         progress: undefined,
       });
     } catch (err) {
-      setWrongInfo(true);
+      setWrongInfo({
+        status: true,
+        description: 'Wrong username or password.',
+      });
     }
     setLoading(false);
   };
@@ -85,7 +133,7 @@ export default ({ isLogin }) => {
 
     try {
       const response = await API.post('auth/signup', body);
-      console.log(response);
+
       toast.success('🌟 Register successful!', {
         position: 'top-right',
         autoClose: 5000,
@@ -97,7 +145,6 @@ export default ({ isLogin }) => {
       });
       setMode(true);
     } catch (err) {
-      console.log(err.response);
       if (
         err.response.data.duplicate &&
         err.response.data.duplicate.hasOwnProperty('username')
@@ -127,11 +174,54 @@ export default ({ isLogin }) => {
     setLoading(false);
   };
 
-  const facebookLoginHandler = (response) => {
-    console.log(response);
+  const facebookLoginHandler = async (response) => {
+    try {
+      const loginResult = await API.post('auth/facebook', {
+        id: response.id,
+        fbAccessToken: response.accessToken,
+      });
+
+      if (loginResult.status === 200) {
+        toast.success('🌟 Login successful!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (err) {
+      setWrongInfo({
+        status: true,
+        description: err.response.data.message,
+      });
+    }
   };
   const googleLoginHandler = async (response) => {
-    console.log(response);
+    try {
+      const loginResult = await API.post('auth/google', {
+        ggAccessToken: response.accessToken,
+      });
+
+      if (loginResult.status === 200) {
+        toast.success('🌟 Login successful!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (err) {
+      setWrongInfo({
+        status: true,
+        description: err.response.data.message,
+      });
+    }
   };
 
   const formChangeHandler = (value, key) => {
@@ -226,6 +316,7 @@ export default ({ isLogin }) => {
             email={formInfo.email}
             handler={formChangeHandler}
             submitHandler={registerHandler}
+            wrongInfo={wrongInfo}
             loading={isLoading}
           />
         )}
@@ -295,4 +386,4 @@ export default ({ isLogin }) => {
       </div>
     </div>
   );
-};
+});

@@ -9,6 +9,8 @@ export default ({
   email,
   handler,
   submitHandler,
+  wrongInfo,
+  loading,
 }) => {
   return (
     <form className='px-8 mt-8' onSubmit={submitHandler}>
@@ -43,6 +45,12 @@ export default ({
         type='email'
         placeholder='Email...'
       />
+
+      {wrongInfo.status && !loading ? (
+        <span className='mt-1 text-xs text-red-800 block text-left'>
+          {wrongInfo.description}
+        </span>
+      ) : null}
 
       <button
         type='submit'
