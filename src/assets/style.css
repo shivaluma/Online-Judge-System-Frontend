@@ -17896,6 +17896,8 @@ video {
   transition-delay: 1000ms;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap');
+
 @font-face {
   font-family: 'TypoRound';
 
@@ -17903,8 +17905,17 @@ video {
     url('./fonts//typo.woff') format('woff'); /* Pretty Modern Browsers */
 }
 
-* {
+body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.mono-space {
+  font-family: 'Fira Code', monospace;
+}
+
+.CodeMirror {
+  font-family: 'Fira Code', monospace;
+  font-size: 16px;
 }
 
 .typo-round {

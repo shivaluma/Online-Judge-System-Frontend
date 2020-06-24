@@ -7,8 +7,11 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@welldone-software/why-did-you-render": "^4.2.5",
+    "add": "^2.0.6",
     "axios": "^0.19.2",
+    "codemirror": "^5.55.0",
     "react": "^16.13.1",
+    "react-codemirror2": "^7.2.1",
     "react-dom": "^16.13.1",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.1.20",
@@ -18,7 +21,8 @@
     "react-spinners": "^0.8.3",
     "react-toastify": "^6.0.5",
     "recoil": "^0.0.10",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "yarn": "^1.22.4"
   },
   "scripts": {
     "build:css": "tailwind build src/assets/tailwind.css -o src/assets/style.css",

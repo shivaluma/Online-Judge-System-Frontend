@@ -4,7 +4,7 @@ import { currentUserQuery } from './recoil/selectors';
 import { userState } from './recoil/atoms';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './assets/style.css';
-// import Landing from './pages/Landing';
+import CodePlayground from './pages/CodePlayground';
 import SocialLogin from './pages/SocialLogin';
 import Fallback from './components/UI/Fallback';
 const Login = React.lazy(
@@ -64,6 +64,8 @@ function App() {
             </Suspense>
           )}
         />
+
+        <Route path='/playground' component={CodePlayground} />
       </Switch>
     </Router>
   );
