@@ -1,7 +1,5 @@
-import React, { Suspense, useEffect } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { currentUserQuery } from './recoil/selectors';
-import { userState } from './recoil/atoms';
+import React, { Suspense } from 'react';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './assets/style.css';
 import CodePlayground from './pages/CodePlayground';
@@ -29,11 +27,7 @@ const Landing = React.lazy(
 );
 
 function App() {
-  const userQuery = useRecoilValue(currentUserQuery);
-  const [user, setUser] = useRecoilState(userState);
-  useEffect(() => {
-    if (userQuery) setUser({ isLogin: true, data: userQuery });
-  }, [userQuery, setUser]);
+  const user = { isLogin: false };
   return (
     <Router>
       <Switch>

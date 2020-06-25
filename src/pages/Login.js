@@ -10,9 +10,8 @@ import API from '../api';
 import 'react-toastify/dist/ReactToastify.css';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { GoogleLogin } from 'react-google-login';
-import { userState } from '../recoil/atoms';
+
 import { withRouter } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
 export default withRouter(({ isLoginMode, history }) => {
   const [mode, setMode] = useState(isLoginMode);
@@ -47,7 +46,7 @@ export default withRouter(({ isLoginMode, history }) => {
     description: '',
   });
   const [isLoading, setLoading] = useState(false);
-  const [user, setUser] = useRecoilState(userState);
+
   useEffect(() => {
     document.title = mode ? 'Login' : 'Sign Up';
     setFormInfo({
@@ -82,10 +81,6 @@ export default withRouter(({ isLoginMode, history }) => {
     });
   }, [mode]);
 
-  useEffect(() => {
-    if (user.isLogin) history.replace('/');
-  }, [user]);
-
   const loginHandler = async (event) => {
     event.preventDefault();
     if (isLoading) return;
@@ -97,18 +92,7 @@ export default withRouter(({ isLoginMode, history }) => {
 
     try {
       const response = await API.post('auth/login', body);
-
-      setUser({ isLogin: true, data: response.data.user });
-      localStorage.setItem('brosjudge-token', response.data.accessToken);
-      toast.success('🌟 Login successful!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log(response);
     } catch (err) {
       setWrongInfo({
         status: true,

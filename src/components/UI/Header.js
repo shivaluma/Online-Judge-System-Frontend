@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
-import { useRecoilState } from 'recoil';
+
 import { FaCode } from 'react-icons/fa';
 
-import { userState } from '../../recoil/atoms';
 export default memo(() => {
-  const [user] = useRecoilState(userState);
+  const user = { isLogin: false };
 
   return (
     <div
