@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import Header from '../components/UI/Header';
+import Header from '../../components/UI/Header';
 import { FaCode } from 'react-icons/fa';
-import FormSocial from '../components/UI/FormSocial';
-import API from '../api';
+import FormSocial from '../../components/UI/FormSocial';
+import API from '../../api';
 
 export default (props) => {
   console.log(props);

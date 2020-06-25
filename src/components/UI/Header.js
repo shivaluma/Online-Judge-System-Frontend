@@ -1,10 +1,15 @@
 import React, { memo } from 'react';
 
 import { FaCode } from 'react-icons/fa';
+import {
+  makeSelectCurrentUser,
+  makeSelectUserData,
+} from '../../containers/App/selectors';
 
-export default memo(() => {
-  const user = { isLogin: false };
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
+const Header = ({ isLogin, user }) => {
   return (
     <div
       className='w-full h-12 border-0'
@@ -29,7 +34,7 @@ export default memo(() => {
         </nav>
 
         <div className='ml-auto px-6 border-l border-gray-600 text-gray-200 text-sm'>
-          {!user.isLogin ? (
+          {!isLogin ? (
             <>
               <span className='mr-2 font-semibold'>Signup</span>
               <span className='font-thin text-gray-500'>or</span>
@@ -37,13 +42,18 @@ export default memo(() => {
             </>
           ) : (
             <>
-              <span className='mr-2 font-semibold'>
-                Hi, {user.data.username}
-              </span>
+              <span className='mr-2 font-semibold'>Hi, {user.username}</span>
             </>
           )}
         </div>
       </div>
     </div>
   );
+};
+
+const mapStateToProps = createStructuredSelector({
+  isLogin: makeSelectCurrentUser(),
+  user: makeSelectUserData(),
 });
+
+export default connect(mapStateToProps)(Header);

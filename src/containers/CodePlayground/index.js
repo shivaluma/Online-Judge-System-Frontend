@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../components/UI/Header';
+import Header from '../../components/UI/Header';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import axios from 'axios';
 require('codemirror/lib/codemirror.css');

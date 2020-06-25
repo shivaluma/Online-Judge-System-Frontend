@@ -1,13 +1,15 @@
-import React, { Suspense } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+import configureStore from './configureStore';
 import ReactDOM from 'react-dom';
+import App from './containers/App';
 
-import Fallback from './components/UI/Fallback';
-import App from './App';
+const store = configureStore();
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<Fallback />}>
+    <Provider store={store}>
       <App />
-    </Suspense>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

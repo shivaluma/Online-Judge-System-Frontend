@@ -1,19 +1,21 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 
-import Header from '../components/UI/Header';
+import Header from '../../components/UI/Header';
 import { FaCode, FaFacebookF, FaGoogle, FaGithub } from 'react-icons/fa';
-import FormSignIn from '../components/UI/FormSignIn';
-import FormSignUp from '../components/UI/FormSignUp';
+import FormSignIn from '../../components/UI/FormSignIn';
+import FormSignUp from '../../components/UI/FormSignUp';
 import isEmail from 'validator/lib/isEmail';
-import API from '../api';
-import 'react-toastify/dist/ReactToastify.css';
+import API from '../../api';
+
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { GoogleLogin } from 'react-google-login';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { updateUser } from '../App/actions';
 
-export default withRouter(({ isLoginMode, history }) => {
+const Auth = ({ isLoginMode, history, currentUser, updateUser }) => {
   const [mode, setMode] = useState(isLoginMode);
   const [formInfo, setFormInfo] = useState({
     username: {
@@ -92,7 +94,9 @@ export default withRouter(({ isLoginMode, history }) => {
 
     try {
       const response = await API.post('auth/login', body);
-      console.log(response);
+      localStorage.setItem('brosjudge-token', response.data.accessToken);
+      updateUser(response.data.user);
+      history.replace('/');
     } catch (err) {
       setWrongInfo({
         status: true,
@@ -116,7 +120,7 @@ export default withRouter(({ isLoginMode, history }) => {
 
     try {
       const response = await API.post('auth/signup', body);
-
+      console.log(response);
       setMode(true);
     } catch (err) {
       if (
@@ -156,15 +160,6 @@ export default withRouter(({ isLoginMode, history }) => {
       });
 
       if (loginResult.status === 200) {
-        toast.success('🌟 Login successful!', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
       }
     } catch (err) {
       setWrongInfo({
@@ -261,7 +256,7 @@ export default withRouter(({ isLoginMode, history }) => {
   };
 
   const socialLoginRedirect = (id) => {
-    history.push(`/accounts/social-login${id}`);
+    history.push(`/accounts/social-login/${id}`);
   };
 
   return (
@@ -369,4 +364,14 @@ export default withRouter(({ isLoginMode, history }) => {
       </div>
     </div>
   );
+};
+
+const mapStateToProps = (state) => ({
+  currentUser: state.global.currentUser,
+  userData: state.global.userData,
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ updateUser }, dispatch);
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));

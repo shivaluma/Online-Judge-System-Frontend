@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import Header from '../components/UI/Header';
+import Header from '../../components/UI/Header';
 export default () => {
   useEffect(() => {}, []);
   return (
@@ -12,8 +12,6 @@ export default () => {
       }}
     >
       <Header />
-
-      
     </div>
   );
 };

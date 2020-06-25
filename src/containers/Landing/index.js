@@ -1,6 +1,6 @@
 import React from 'react';
-import NavButton from '../components/UI/NavButton';
-import ListObj from '../components/Ipad/ListObj';
+import NavButton from '../../components/UI/NavButton';
+import ListObj from '../../components/Ipad/ListObj';
 import { Link } from 'react-router-dom';
 import {
   FaJava,
@@ -14,8 +14,8 @@ import {
   FaHeart,
   FaAngleRight,
 } from 'react-icons/fa';
-import { ReactComponent as CppSvg } from '../assets/icons/cpp.svg';
-import Card from '../components/UI/Card';
+import { ReactComponent as CppSvg } from '../../assets/icons/cpp.svg';
+import Card from '../../components/UI/Card';
 export default () => (
   <div>
     <div className='relative' style={{ height: '760px', marginTop: '-80px' }}>
