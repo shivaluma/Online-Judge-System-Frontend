@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
+import React from 'react';
 
+import { Link, useHistory } from 'react-router-dom';
 import { FaCode } from 'react-icons/fa';
 import {
   makeSelectCurrentUser,
@@ -7,9 +8,17 @@ import {
 } from '../../containers/App/selectors';
 
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { removeUser } from '../../containers/App/actions';
+const Header = ({ isLogin, user, removeUser }) => {
+  const history = useHistory();
+  const logoutHandler = () => {
+    localStorage.removeItem('brosjudge-token');
+    removeUser();
+    history.replace('/');
+  };
 
-const Header = ({ isLogin, user }) => {
   return (
     <div
       className='w-full h-12 border-0'
@@ -20,16 +29,20 @@ const Header = ({ isLogin, user }) => {
     >
       <div className='container flex h-full items-center'>
         <FaCode className='inline-block mr-2 text-xl font-normal text-gray-200' />
-        <span className='text-xl font-normal text-gray-200 typo-round'>
-          BrosCode
-        </span>
+        <Link to='/'>
+          <span className='text-xl font-normal text-gray-200 typo-round'>
+            BrosCode
+          </span>
+        </Link>
 
         <nav className='list-none flex text-sm text-gray-200 ml-8'>
           <li>Explore</li>
           <li className='ml-6'>Problems</li>
           <li className='ml-6'>Mock</li>
           <li className='ml-6'>Contest</li>
-          <li className='ml-6'>Article</li>
+          <Link to='/playground'>
+            <li className='ml-6 hover:text-orange-500'>Playground</li>
+          </Link>
           <li className='ml-6'>Discuss</li>
         </nav>
 
@@ -43,6 +56,13 @@ const Header = ({ isLogin, user }) => {
           ) : (
             <>
               <span className='mr-2 font-semibold'>Hi, {user.username}</span>
+
+              <span
+                className='ml-2 font-semibold text-red-400 hover:cursor-pointer'
+                onClick={logoutHandler}
+              >
+                logout
+              </span>
             </>
           )}
         </div>
@@ -56,4 +76,7 @@ const mapStateToProps = createStructuredSelector({
   user: makeSelectUserData(),
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ removeUser }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

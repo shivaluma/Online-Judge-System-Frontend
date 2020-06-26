@@ -1,11 +1,15 @@
 import React, { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import Header from '../../components/UI/Header';
 import { FaCode } from 'react-icons/fa';
 import FormSocial from '../../components/UI/FormSocial';
 import API from '../../api';
-
-export default (props) => {
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { updateUser } from '../App/actions';
+const SocialAuth = (props) => {
   console.log(props);
+
   const [username, setUsername] = useState({
     value: '',
     error: false,
@@ -73,6 +77,23 @@ export default (props) => {
         errorDesc: err.response.data.message,
         isValid: false,
       });
+    }
+  };
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await API.post('/auth/update-username', {
+        username: username.value,
+        email: email.value,
+        usernameToken: props.location?.state?.token || '',
+      });
+
+      localStorage.setItem('brosjudge-token', response.data.accessToken);
+      props.updateUser(localStorage.data.user);
+    } catch (err) {
+      console.log(err.response);
     }
   };
 
@@ -160,7 +181,7 @@ export default (props) => {
           emailServerCheck={emailError}
           usernameServerCheck={usernameError}
           handler={formChangeHandler}
-          submitHandler={() => {}}
+          submitHandler={submitHandler}
           wrongInfo={wrongInfo}
           loading={isLoading}
         />
@@ -168,3 +189,8 @@ export default (props) => {
     </div>
   );
 };
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ updateUser }, dispatch);
+
+export default connect(null, mapDispatchToProps)(SocialAuth);

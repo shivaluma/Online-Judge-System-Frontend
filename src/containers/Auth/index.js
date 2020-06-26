@@ -169,15 +169,18 @@ const Auth = ({ isLoginMode, history, currentUser, updateUser }) => {
     }
   };
   const googleLoginHandler = async (response) => {
+    console.log(response);
     try {
       const loginResult = await API.post('auth/google', {
         ggAccessToken: response.accessToken,
       });
 
       if (loginResult.status === 200) {
+        localStorage.setItem('brosjudge-token', loginResult.data.accessToken);
+        updateUser(loginResult.data.user);
+        history.replace('/');
       }
     } catch (err) {
-      console.log(err.response);
       if (err.response.status === 302) {
         history.push({
           pathname: `/accounts/social-login/`,

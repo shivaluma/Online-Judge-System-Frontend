@@ -2,9 +2,9 @@ import produce from 'immer';
 
 import {
   LOAD_USER,
-  LOAD_USER_SUCCESS,
   UPDATE_USER,
   LOAD_USER_ERROR,
+  REMOVE_USER,
 } from './constants';
 
 // The initial state of the App
@@ -44,11 +44,11 @@ const appReducer = (state = initialState, action) =>
         draft.userData = false;
         break;
 
-      case LOAD_USER_SUCCESS:
-        draft.userData.repositories = action.repos;
+      case REMOVE_USER:
         draft.loading = false;
-        draft.currentUser = action.username;
-        break;
+        draft.error = false;
+        draft.currentUser = false;
+        draft.userData = false;
     }
   });
 

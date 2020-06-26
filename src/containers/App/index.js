@@ -2,13 +2,14 @@ import React, { Suspense, useEffect } from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import '../../assets/style.css';
-import CodePlayground from '../CodePlayground';
+
 import SocialLogin from '../SocialAuth';
 import Fallback from '../../components/UI/Fallback';
 import API from '../../api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import Index from '../Index';
+import Landing from '../Landing';
 import { loadUser, userLoadingError } from './actions';
 
 const Login = React.lazy(
@@ -18,17 +19,10 @@ const Login = React.lazy(
     })
 );
 
-const Index = React.lazy(
+const CodePlayground = React.lazy(
   () =>
     new Promise((resolve, _) => {
-      setTimeout(() => resolve(import('../Index')), 0);
-    })
-);
-
-const Landing = React.lazy(
-  () =>
-    new Promise((resolve, _) => {
-      setTimeout(() => resolve(import('../Landing')), 0);
+      setTimeout(() => resolve(import('../CodePlayground')), 500);
     })
 );
 
@@ -56,13 +50,7 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
           path='/'
           exact
           render={() =>
-            loading ? (
-              <Fallback />
-            ) : (
-              <Suspense fallback={<Fallback />}>
-                {currentUser ? <Index /> : <Landing />}
-              </Suspense>
-            )
+            loading ? <Fallback /> : currentUser ? <Index /> : <Landing />
           }
         />
         <Route
@@ -86,7 +74,14 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
           )}
         />
 
-        <Route path='/playground' component={CodePlayground} />
+        <Route
+          path='/playground'
+          render={() => (
+            <Suspense fallback={<Fallback />}>
+              <CodePlayground />
+            </Suspense>
+          )}
+        />
       </Switch>
     </Router>
   );

@@ -25,8 +25,7 @@
     "recoil": "^0.0.10",
     "redux": "^4.0.5",
     "reselect": "^4.0.0",
-    "validator": "^13.0.0",
-    "yarn": "^1.22.4"
+    "validator": "^13.0.0"
   },
   "scripts": {
     "build:css": "tailwind build src/assets/tailwind.css -o src/assets/style.css",

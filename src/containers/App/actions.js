@@ -3,6 +3,7 @@ import {
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
   UPDATE_USER,
+  REMOVE_USER,
 } from './constants';
 
 export function loadUser(user) {
@@ -16,6 +17,12 @@ export function updateUser(user) {
   return {
     type: UPDATE_USER,
     user,
+  };
+}
+
+export function removeUser(user) {
+  return {
+    type: REMOVE_USER,
   };
 }
 
