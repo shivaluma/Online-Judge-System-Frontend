@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+
 import Header from '../../components/UI/Header';
 import { FaCode } from 'react-icons/fa';
 import FormSocial from '../../components/UI/FormSocial';
@@ -82,7 +82,6 @@ const SocialAuth = (props) => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-
     try {
       const response = await API.post('/auth/update-username', {
         username: username.value,
@@ -92,6 +91,7 @@ const SocialAuth = (props) => {
 
       localStorage.setItem('brosjudge-token', response.data.accessToken);
       props.updateUser(localStorage.data.user);
+      props.history.push('/');
     } catch (err) {
       console.log(err.response);
     }
