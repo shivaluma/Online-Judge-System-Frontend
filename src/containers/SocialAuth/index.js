@@ -8,8 +8,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { updateUser } from '../App/actions';
 const SocialAuth = (props) => {
-  console.log(props);
-
   const [username, setUsername] = useState({
     value: '',
     error: false,
@@ -88,12 +86,13 @@ const SocialAuth = (props) => {
         email: email.value,
         usernameToken: props.location?.state?.token || '',
       });
-
+      console.log('response : ', response);
+      console.log(props.history);
       localStorage.setItem('brosjudge-token', response.data.accessToken);
-      props.updateUser(localStorage.data.user);
+      props.updateUser(response.data.user);
       props.history.push('/');
     } catch (err) {
-      console.log(err.response);
+      console.log(err);
     }
   };
 

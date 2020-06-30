@@ -49,9 +49,13 @@ const Header = ({ isLogin, user, removeUser }) => {
         <div className='ml-auto px-6 border-l border-gray-600 text-gray-200 text-sm'>
           {!isLogin ? (
             <>
-              <span className='mr-2 font-semibold'>Signup</span>
+              <Link to='/accounts/signup'>
+                <span className='mr-2 font-semibold'>Signup</span>
+              </Link>
               <span className='font-thin text-gray-500'>or</span>
-              <span className='ml-2 font-semibold'>Login</span>
+              <Link to='/accounts/login'>
+                <span className='ml-2 font-semibold'>Login</span>
+              </Link>
             </>
           ) : (
             <>

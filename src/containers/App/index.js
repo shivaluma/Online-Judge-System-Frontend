@@ -26,6 +26,13 @@ const CodePlayground = React.lazy(
     })
 );
 
+const UserProfile = React.lazy(
+  () =>
+    new Promise((resolve, _) => {
+      setTimeout(() => resolve(import('../User')), 300);
+    })
+);
+
 function App({ loadUser, currentUser, loading, userLoadingError }) {
   useEffect(() => {
     (async () => {
@@ -76,9 +83,29 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
 
         <Route
           path='/playground'
+          exact
           render={() => (
             <Suspense fallback={<Fallback />}>
               <CodePlayground />
+            </Suspense>
+          )}
+        />
+
+        <Route
+          path='/profile'
+          exact
+          render={() => (
+            <Suspense fallback={<Fallback />}>
+              <CodePlayground />
+            </Suspense>
+          )}
+        />
+
+        <Route
+          path='/profile'
+          render={() => (
+            <Suspense fallback={<Fallback />}>
+              <UserProfile />
             </Suspense>
           )}
         />

@@ -160,12 +160,25 @@ const Auth = ({ isLoginMode, history, currentUser, updateUser }) => {
       });
 
       if (loginResult.status === 200) {
+        localStorage.setItem('brosjudge-token', loginResult.data.accessToken);
+        updateUser(loginResult.data.user);
+        history.replace('/');
       }
     } catch (err) {
-      setWrongInfo({
-        status: true,
-        description: err.response.data.message,
-      });
+      if (err.response.status === 302) {
+        history.push({
+          pathname: `/accounts/social-login/`,
+          state: {
+            email: err.response.data.email,
+            token: err.response.data.usernameToken,
+          },
+        });
+      } else {
+        setWrongInfo({
+          status: true,
+          description: err.response.data.message,
+        });
+      }
     }
   };
   const googleLoginHandler = async (response) => {
