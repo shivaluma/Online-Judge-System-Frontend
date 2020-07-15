@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "codemirror": "^5.55.0",
     "immer": "^7.0.5",
+    "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-calendar-heatmap": "^1.8.1",
     "react-codemirror2": "^7.2.1",

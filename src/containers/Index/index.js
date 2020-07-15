@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FaChartLine, FaTrophy, FaComments } from 'react-icons/fa';
 import Header from '../../components/UI/Header';
 import TrendingPost from '../../components/Forum/TrendingPost';

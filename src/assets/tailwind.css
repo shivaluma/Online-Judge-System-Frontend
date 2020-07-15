@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap');
+
 @font-face {
   font-family: 'TypoRound';
   src: url('./fonts/typo.woff2') format('woff2'),
@@ -13,12 +13,22 @@ body {
 }
 
 .mono-space {
-  font-family: 'Fira Code', monospace;
+  font-family: monospace;
 }
 
 .CodeMirror {
-  font-family: 'Fira Code', monospace;
-  font-size: 16px;
+  font-family: monospace;
+  font-size: 17px;
+  height: 100% !important;
+  width: 100%;
+}
+
+.CodeMirror-compress {
+  height: calc(100vh - 98px) !important;
+}
+
+.CodeMirror-expand {
+  height: calc(100vh - 50px) !important;
 }
 
 .typo-round {

@@ -42,6 +42,7 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
           return;
         }
         const response = await API.get('user/me');
+        console.log(response);
         loadUser(response.data);
       } catch (err) {
         userLoadingError();
