@@ -8,10 +8,11 @@
     "@testing-library/user-event": "^7.1.2",
     "@welldone-software/why-did-you-render": "^4.2.5",
     "add": "^2.0.6",
+    "antd": "^4.4.2",
     "axios": "^0.19.2",
     "codemirror": "^5.55.0",
+    "dayjs": "^1.8.29",
     "immer": "^7.0.5",
-    "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-calendar-heatmap": "^1.8.1",
     "react-codemirror2": "^7.2.1",
@@ -33,6 +34,7 @@
   },
   "scripts": {
     "build:css": "tailwind build src/assets/tailwind.css -o src/assets/style.css",
+    "build:postcss": "postcss src/assets/tailwind.css -o src/assets/style.css",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -54,7 +56,9 @@
     ]
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.3.0",
     "autoprefixer": "^9.8.0",
+    "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.4.6"

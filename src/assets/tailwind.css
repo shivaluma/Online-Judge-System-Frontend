@@ -1,14 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import '~antd/dist/antd.css';
 @font-face {
   font-family: 'TypoRound';
   src: url('./fonts/typo.woff2') format('woff2'),
     url('./fonts//typo.woff') format('woff'); /* Pretty Modern Browsers */
 }
 
-body {
+html {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -207,7 +207,7 @@ body {
   animation: load7 1.8s infinite ease-in-out;
 }
 .loader {
-  color: #292929;
+  color: rgb(135, 135, 135);
   font-size: 10px;
   margin: 0 auto;
   top: 50%;

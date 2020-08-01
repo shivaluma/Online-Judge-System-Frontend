@@ -1,8 +1,8 @@
 import React, { Suspense, useEffect } from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import '../../assets/style.css';
 
+import '../../assets/style.css';
 import SocialLogin from '../SocialAuth';
 import Fallback from '../../components/UI/Fallback';
 import API from '../../api';
@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import Index from '../Index';
 import Landing from '../Landing';
 import { loadUser, userLoadingError } from './actions';
+import ProblemSet from '../ProblemSet';
 
 const Login = React.lazy(
   () =>
@@ -53,64 +54,75 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
 
   return (
     <Router>
-      <Switch>
-        <Route
-          path='/'
-          exact
-          render={() =>
-            loading ? <Fallback /> : currentUser ? <Index /> : <Landing />
-          }
-        />
-        <Route
-          path='/accounts/login'
-          exact
-          render={() => (
-            <Suspense fallback={<Fallback />}>
-              <Login isLoginMode={true} />
-            </Suspense>
-          )}
-        />
+      {loading ? (
+        <Fallback />
+      ) : (
+        <Switch>
+          <Route
+            path='/'
+            exact
+            render={() => (currentUser ? <Index /> : <Landing />)}
+          />
+          <Route
+            path='/accounts/login'
+            exact
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <Login isLoginMode={true} />
+              </Suspense>
+            )}
+          />
 
-        <Route path='/accounts/social-login' component={SocialLogin} />
+          <Route path='/accounts/social-login' component={SocialLogin} />
 
-        <Route
-          path='/accounts/signup'
-          render={() => (
-            <Suspense fallback={<Fallback />}>
-              <Login isLoginMode={false} />
-            </Suspense>
-          )}
-        />
+          <Route
+            path='/accounts/signup'
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <Login isLoginMode={false} />
+              </Suspense>
+            )}
+          />
 
-        <Route
-          path='/playground'
-          exact
-          render={() => (
-            <Suspense fallback={<Fallback />}>
-              <CodePlayground />
-            </Suspense>
-          )}
-        />
+          <Route
+            path='/playground'
+            exact
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <CodePlayground />
+              </Suspense>
+            )}
+          />
 
-        <Route
-          path='/profile'
-          exact
-          render={() => (
-            <Suspense fallback={<Fallback />}>
-              <CodePlayground />
-            </Suspense>
-          )}
-        />
+          <Route
+            path='/profile'
+            exact
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <CodePlayground />
+              </Suspense>
+            )}
+          />
 
-        <Route
-          path='/profile'
-          render={() => (
-            <Suspense fallback={<Fallback />}>
-              <UserProfile />
-            </Suspense>
-          )}
-        />
-      </Switch>
+          <Route
+            path='/profile'
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <UserProfile />
+              </Suspense>
+            )}
+          />
+
+          <Route
+            path='/problemset'
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <ProblemSet />
+              </Suspense>
+            )}
+          />
+        </Switch>
+      )}
     </Router>
   );
 }

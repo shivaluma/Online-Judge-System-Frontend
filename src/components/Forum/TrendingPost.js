@@ -10,7 +10,7 @@ const TrendingPost = () => {
       </div>
       <div className='w-full pl-2 flex flex-col'>
         <div className='flex items-center'>
-          <Avatar isRound size={8} />
+          <Avatar className='h-8 w-8' isRound size={8} />
           <div className='flex flex-col ml-3'>
             <h2 className='text-xl text-black'>
               Google - Intern Software Engineer

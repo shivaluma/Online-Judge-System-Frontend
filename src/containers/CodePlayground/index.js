@@ -3,7 +3,7 @@ import Header from '../../components/UI/Header';
 
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   FaPlayCircle,
   FaExpandAlt,
@@ -23,13 +23,7 @@ require('codemirror/keymap/sublime');
 require('codemirror/addon/edit/closebrackets');
 
 export default () => {
-  const [code, setCode] = useState(`#include <iostream>
-using namespace std;
-  
-int main() {
-    cout << "Thanh dep trai";
-    return 0;  
-}`);
+  const [code, setCode] = useState('');
   const [running, setIsRunning] = useState(false);
   const [resultArr, setResultArr] = useState([]);
   const [isHeaderCollapse, setHederCollapse] = useState(false);
@@ -44,7 +38,7 @@ int main() {
     if (running) return;
     setIsRunning(true);
     console.log(stdinRef.current);
-    const response = await axios.post('http://34.96.231.107/submit', {
+    const response = await axios.post('http://localhost/submit', {
       src: utf8_to_b64(code),
       stdin: '',
       expected_result: '',
@@ -60,8 +54,8 @@ int main() {
       ) {
         clearInterval(getResultInterval);
         console.log(result.data);
-        result.data.time = moment().format('LTS');
-        if (result.data.stderr === '') result.data.status = 'Success';
+        result.data.time = dayjs().format('h:mm:ss A');
+        if (!result.data.isError) result.data.status = 'Success';
         setResultArr([result.data, ...resultArr]);
         setIsRunning(false);
       }
@@ -74,6 +68,12 @@ int main() {
   };
 
   const resultList = resultArr.map((result, index) => {
+    if (result.status === 'Memory Exceeded') {
+      return null;
+    }
+    if (result.status === 'Time Limit Exceeded') {
+      return null;
+    }
     if (result.stderr !== '') {
       return (
         <div key={index} className='flex flex-col px-2 mb-3'>
@@ -85,8 +85,8 @@ int main() {
     return (
       <div key={index} className='flex flex-col px-2 mb-3'>
         <span className='text-blue-500 text-xs'>{result.time}</span>
-        <div className='text-green-600 text-sm'>
-          {result.output} ‣
+        <div className='text-green-600 text-sm whitespace-pre'>
+          {`${result.output}`} ‣
           <span className='text-gray-700'>
             {Number.parseFloat(result.time_used[0]).toFixed(2)}ms
           </span>
@@ -101,7 +101,6 @@ int main() {
       <div className='flex'>
         <div className='flex flex-col w-2/3'>
           <CodeMirror
-            value={code}
             options={{
               theme: 'idea',
               lineNumbers: true,
@@ -142,7 +141,7 @@ int main() {
                   Running
                 </span>
               ) : resultArr.length > 0 ? (
-                resultArr[0].stderr.length > 0 ? (
+                resultArr[0].isError ? (
                   <span className='px-2 py-1 bg-red-500 text-white font-semibold text-sm rounded-full'>
                     {resultArr[0].status}
                   </span>

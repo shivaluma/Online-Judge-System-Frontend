@@ -63,7 +63,11 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
 
         <nav className='list-none flex text-sm text-gray-500 ml-8'>
           <li className='hover:text-gray-200 cursor-pointer'>Explore</li>
-          <li className='ml-6 hover:text-gray-200 cursor-pointer'>Problems</li>
+          <Link to='/problemset'>
+            <li className='ml-6 hover:text-gray-200 cursor-pointer'>
+              Problems
+            </li>
+          </Link>
           <li className='ml-6 hover:text-gray-200 cursor-pointer'>Mock</li>
           <li className='ml-6 hover:text-gray-200 cursor-pointer'>Contest</li>
           <Link to='/playground'>
