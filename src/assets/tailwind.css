@@ -277,3 +277,20 @@ html {
     width: 64px;
   }
 }
+
+.rc-md-navigation {
+  background-color: #fff !important;
+}
+
+.site-tag-plus {
+  background: #fff;
+  border-style: dashed;
+}
+.edit-tag {
+  user-select: none;
+}
+.tag-input {
+  width: 78px;
+  margin-right: 8px;
+  vertical-align: top;
+}

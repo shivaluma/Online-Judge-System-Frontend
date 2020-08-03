@@ -33,6 +33,12 @@ const UserProfile = React.lazy(
       setTimeout(() => resolve(import('../User')), 300);
     })
 );
+const Discuss = React.lazy(
+  () =>
+    new Promise((resolve, _) => {
+      setTimeout(() => resolve(import('../Discuss')), 500);
+    })
+);
 
 function App({ loadUser, currentUser, loading, userLoadingError }) {
   useEffect(() => {
@@ -50,7 +56,7 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
         return;
       }
     })();
-  }, [loadUser]);
+  }, [loadUser, userLoadingError]);
 
   return (
     <Router>
@@ -118,6 +124,15 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
             render={() => (
               <Suspense fallback={<Fallback />}>
                 <ProblemSet />
+              </Suspense>
+            )}
+          />
+
+          <Route
+            path='/discuss'
+            render={() => (
+              <Suspense fallback={<Fallback />}>
+                <Discuss />
               </Suspense>
             )}
           />

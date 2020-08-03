@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Link, useHistory } from 'react-router-dom';
-import {
-  FaCode,
-  FaCaretDown,
-  FaUser,
-  FaHeart,
-  FaFileCode,
-  FaChartPie,
-} from 'react-icons/fa';
+import { FaCode, FaCaretDown } from 'react-icons/fa';
 import {
   makeSelectCurrentUser,
   makeSelectUserData,
-} from '../../containers/App/selectors';
+} from '../../../containers/App/selectors';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { removeUser } from '../../containers/App/actions';
-import Avatar from './Avatar';
-import UserBoard from './Header/UserBoard';
-import useComponentVisible from '../../hooks/useComponentVisible';
+import { removeUser } from '../../../containers/App/actions';
+import Avatar from '../Avatar';
+import UserBoard from './UserBoard';
+import useComponentVisible from '../../../hooks/useComponentVisible';
 const Header = ({ isLogin, user, removeUser, noContainer }) => {
   const history = useHistory();
   const logoutHandler = () => {
@@ -28,8 +21,6 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
     removeUser();
     history.replace('/');
   };
-
-  const [isPopupShowing, setPopupShowing] = useState(false);
 
   const {
     ref,
@@ -75,7 +66,9 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
               Playground
             </li>
           </Link>
-          <li className='ml-6 hover:text-gray-200 cursor-pointer'>Discuss</li>
+          <Link to='/discuss'>
+            <li className='ml-6 hover:text-gray-200 cursor-pointer'>Discuss</li>
+          </Link>
         </nav>
 
         <div className='ml-auto px-6 border-l border-gray-600 text-gray-200 text-sm'>

@@ -108,7 +108,6 @@ const Auth = ({ isLoginMode, history, currentUser, updateUser }) => {
 
   const registerHandler = async (event) => {
     event.preventDefault();
-    event.preventDefault();
     if (isLoading) return;
     setLoading(true);
     const body = {
@@ -123,6 +122,7 @@ const Auth = ({ isLoginMode, history, currentUser, updateUser }) => {
       console.log(response);
       setMode(true);
     } catch (err) {
+      console.log(err.response);
       if (
         err.response.data.duplicate &&
         err.response.data.duplicate.hasOwnProperty('username')
