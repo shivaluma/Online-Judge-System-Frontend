@@ -18911,6 +18911,20 @@ html {
   vertical-align: top;
 }
 
+.ant-menu-horizontal {
+  line-height: 40px !important;
+}
+
+.comment-action {
+  padding-left: 8px;
+  cursor: 'auto';
+}
+
+[class*='-col-rtl'] .comment-action {
+  padding-right: 8px;
+  padding-left: 0;
+}
+
 @media (min-width: 640px) {
   .sm\:space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;

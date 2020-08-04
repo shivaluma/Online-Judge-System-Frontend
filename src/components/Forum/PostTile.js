@@ -2,35 +2,38 @@ import React from 'react';
 import { Avatar, Tooltip } from 'antd';
 import { TiPin } from 'react-icons/ti';
 import { FaCaretUp, FaRegEye } from 'react-icons/fa';
-const PostTile = () => {
+import dayjs from 'dayjs';
+var relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
+const PostTile = ({ post }) => {
   return (
     <div className='flex px-5 py-4 items-center border-b border-gray-200'>
-      <Avatar
-        size={48}
-        src='https://i.pinimg.com/originals/a0/c0/23/a0c023ba0b1e25ecdf01745b53cbf6fd.jpg'
-      />
+      <Avatar size={48} src={post?.authorAvatar} />
       <div className='flex flex-col ml-3 mb-1'>
         <div className='text-lg flex items-center'>
           <Tooltip placement='top' title={'Pinned'}>
             <TiPin className='text-2xl mr-2' />
           </Tooltip>
 
-          <h3 className='text-md'>Microsoft Online Assessment Questions</h3>
+          <h3 className='text-base' style={{ color: '#212121' }}>
+            {post.title}
+          </h3>
         </div>
 
         <span className='text-xs text-gray-500 mt-1'>
-          Shiro created at: October 6, 2019 6:40 AM | Last Reply: creppocchovcl
-          3 days ago
+          {post.authorUsername} created at: {dayjs(post.createdAt).fromNow()} |
+          Last Update: {dayjs(post.updatedAt).fromNow()}
         </span>
       </div>
-
-      <div className='flex items-center ml-auto font-thin'>
-        <FaCaretUp className='text-xl text-gray-300' />
-        <span className='text-sm ml-1 text-gray-500'>149</span>
-      </div>
-      <div className='flex items-center ml-auto text-gray-600 font-thin'>
-        <FaRegEye className='text-xl text-gray-300' />
-        <span className='text-sm ml-1 text-gray-500'>149</span>
+      <div className='ml-auto flex'>
+        <div className='flex items-center font-thin mr-12'>
+          <FaCaretUp className='text-xl text-gray-300' />
+          <span className='text-sm ml-1 text-gray-700'>149</span>
+        </div>
+        <div className='flex items-center text-gray-600 font-thin'>
+          <FaRegEye className='text-xl text-gray-300' />
+          <span className='text-sm ml-1 text-gray-700'>{post.View.view}</span>
+        </div>
       </div>
     </div>
   );

@@ -40,6 +40,13 @@ const Discuss = React.lazy(
     })
 );
 
+const Post = React.lazy(
+  () =>
+    new Promise((resolve, _) => {
+      setTimeout(() => resolve(import('../Discuss/Post')), 350);
+    })
+);
+
 function App({ loadUser, currentUser, loading, userLoadingError }) {
   useEffect(() => {
     (async () => {
@@ -129,10 +136,20 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
           />
 
           <Route
+            exact
             path='/discuss'
             render={() => (
               <Suspense fallback={<Fallback />}>
                 <Discuss />
+              </Suspense>
+            )}
+          />
+
+          <Route
+            path='/discuss/:discussId'
+            component={() => (
+              <Suspense fallback={<Fallback />}>
+                <Post />
               </Suspense>
             )}
           />

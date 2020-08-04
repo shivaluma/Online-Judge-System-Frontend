@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 class EditableTagGroup extends React.Component {
   state = {
-    tags: [],
+    tags: this.props.value.tags,
     inputVisible: false,
     inputValue: '',
     editInputIndex: -1,
@@ -13,7 +13,7 @@ class EditableTagGroup extends React.Component {
 
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
-    console.log(tags);
+    this.props.setValue({ ...this.props.value, tags: tags });
     this.setState({ tags });
   };
 
@@ -32,6 +32,7 @@ class EditableTagGroup extends React.Component {
       tags = [...tags, inputValue];
     }
     console.log(tags);
+    this.props.setValue({ ...this.props.value, tags: tags });
     this.setState({
       tags,
       inputVisible: false,

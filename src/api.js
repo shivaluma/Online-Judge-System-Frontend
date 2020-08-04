@@ -2,7 +2,7 @@ import axios from 'axios';
 // https://judgeonline.df.r.appspot.com/api/
 // http://localhost:3003/api/
 const instance = axios.create({
-  baseURL: `https://judgeonline.df.r.appspot.com/api/`,
+  baseURL: `http://localhost:3003/api/`,
 });
 
 instance.interceptors.request.use(

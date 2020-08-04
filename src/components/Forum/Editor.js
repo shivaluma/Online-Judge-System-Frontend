@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import { Button, Tag } from 'antd';
+import React, { memo, useState } from 'react';
+import { Button, Tag, Alert } from 'antd';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import MarkdownIt from 'markdown-it';
@@ -19,9 +19,18 @@ const mdParser = new MarkdownIt({
     return ''; // use external default escaping
   },
 });
-const Editor = ({ mode, setMode, value, setValue }) => {
-  const handleEditorChange = ({ html, text }) => {
-    setValue(text);
+const Editor = ({
+  mode,
+  setMode,
+  value,
+  setValue,
+  editorRef,
+  loading,
+  isError,
+  onSubmit,
+}) => {
+  const handleTitleChange = (event) => {
+    setValue({ ...value, title: event.target.value });
   };
 
   return (
@@ -62,11 +71,23 @@ const Editor = ({ mode, setMode, value, setValue }) => {
       </div>
       <div className='w-full h-full overflow-hidden'>
         <div className='w-full flex py-3 justify-between items-center'>
-          <input
-            className='rounded-md border border-gray-400 px-4 py-2 outline-none text-sm'
-            placeholder='Enter topic title...'
-            style={{ width: '500px' }}
-          />
+          <div className='flex items-center'>
+            <input
+              className='rounded-md border border-gray-400 px-4 py-2 outline-none text-sm mr-4'
+              placeholder='Enter topic title...'
+              value={value.title}
+              onChange={handleTitleChange}
+              style={{ width: '500px' }}
+            />
+
+            {isError && (
+              <Alert
+                type='error'
+                message='Title and content cannot be empty.'
+                banner
+              />
+            )}
+          </div>
 
           <div className='flex'>
             <Button
@@ -78,7 +99,13 @@ const Editor = ({ mode, setMode, value, setValue }) => {
             >
               Close
             </Button>
-            <Button type='primary' size={'large'} className='flex items-center'>
+            <Button
+              type='primary'
+              size={'large'}
+              className='flex items-center'
+              loading={loading}
+              onClick={onSubmit}
+            >
               Send
               <svg
                 viewBox='0 0 24 24'
@@ -96,12 +123,13 @@ const Editor = ({ mode, setMode, value, setValue }) => {
         </div>
         <div className='w-full h-full pt-3'>
           <MdEditor
-            value={value}
+            //value={value.content}
+            ref={editorRef}
             style={{ height: 'calc(100% - 100px)', marginBottom: '5px' }}
             renderHTML={(text) => mdParser.render(text)}
-            onChange={handleEditorChange}
+            //onChange={handleEditorChange}
           />
-          <EditableTagGroup />
+          <EditableTagGroup value={value} setValue={setValue} />
         </div>
       </div>
     </div>
