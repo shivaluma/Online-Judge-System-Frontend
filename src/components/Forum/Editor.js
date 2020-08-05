@@ -6,6 +6,7 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
+import '../../assets/fix-markdown.css';
 import EditableTagGroup from '../UI/EditableTagGroup';
 
 const mdParser = new MarkdownIt({
@@ -121,14 +122,16 @@ const Editor = ({
             </Button>
           </div>
         </div>
-        <div className='w-full h-full pt-3'>
+        <div className='w-full h-full pt-3 markdown-body'>
           <MdEditor
             //value={value.content}
+
             ref={editorRef}
             style={{ height: 'calc(100% - 100px)', marginBottom: '5px' }}
             renderHTML={(text) => mdParser.render(text)}
             //onChange={handleEditorChange}
           />
+
           <EditableTagGroup value={value} setValue={setValue} />
         </div>
       </div>

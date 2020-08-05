@@ -10,19 +10,49 @@ import API from '../../../api';
 import Layout from '../../../hocs/Layout';
 import { withRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
+import '../../../assets/fix-markdown.css';
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 
 const Post = (props) => {
   const [postData, setPostData] = useState(null);
+  const [currentVote, setCurrentVote] = useState(null);
+
+  const changeVoteHandler = async (typeVote) => {
+    try {
+      const voteResult = await API.post(
+        'discuss/' + props.match.params.discussId + '/vote',
+        {
+          typeVote: typeVote,
+        }
+      );
+      setCurrentVote(typeVote);
+      const value = typeVote === 'up' ? 1 : -1;
+      const newPostData = { ...postData };
+      if (currentVote) {
+        newPostData.upVote += value;
+        newPostData.downVote -= value;
+      } else {
+        if (value > 0) {
+          newPostData.upVote += value;
+        } else newPostData.downVote -= value;
+      }
+      setPostData(newPostData);
+    } catch (err) {
+      console.log(err.response);
+    }
+  };
+
   useEffect(() => {
     (async function () {
       try {
-        const { data } = await API.get(
-          'discuss/' + props.match.params.discussId
-        );
-        console.log(data);
-        setPostData(data.discuss);
+        const [postData, voteData] = await Promise.all([
+          API.get('discuss/' + props.match.params.discussId),
+          API.get('discuss/' + props.match.params.discussId + '/vote'),
+        ]);
+        setPostData(postData.data.discuss);
+
+        setCurrentVote(voteData.data.vote.typeVote);
       } catch (err) {
         console.log(err.response);
       }
@@ -63,15 +93,31 @@ const Post = (props) => {
                 </div>
                 <div className='flex'>
                   <div
-                    className='flex flex-col items-center py-2'
+                    className='flex flex-col items-center py-2 px-5'
                     style={{ width: '82.77px' }}
                   >
-                    <button className='rounded-md px-4 py-2 bg-gray-200 focus:outline-none'>
-                      <FaCaretUp className='text-gray-700' />
+                    <button
+                      className={`rounded-md px-4 py-2 ${
+                        currentVote === 'up'
+                          ? 'bg-gray-700 text-gray-100'
+                          : 'bg-gray-200 text-gray-700'
+                      } focus:outline-none`}
+                      onClick={() => changeVoteHandler('up')}
+                    >
+                      <FaCaretUp />
                     </button>
-                    <span className='text-sm text-gray-600 py-2'>120</span>
-                    <button className='rounded-md px-4 py-2 bg-gray-200 focus:outline-none'>
-                      <FaCaretDown className='text-gray-700' />
+                    <span className='text-sm text-gray-600 py-2'>
+                      {postData.upVote - postData.downVote}
+                    </span>
+                    <button
+                      className={`rounded-md px-4 py-2 ${
+                        currentVote === 'down'
+                          ? 'bg-gray-700 text-gray-100'
+                          : 'bg-gray-200 text-gray-700'
+                      } focus:outline-none`}
+                      onClick={() => changeVoteHandler('down')}
+                    >
+                      <FaCaretDown />
                     </button>
                   </div>
 
@@ -98,7 +144,7 @@ const Post = (props) => {
                       </span>
                       <span className='ml-4'>{postData.View.view} Views</span>
                     </div>
-                    <div className='mt-2'>
+                    <div className='mt-2 markdown-body p-3'>
                       {/* prettier-ignore */}
                       <ReactMarkdown source={postData.content} />
                     </div>
