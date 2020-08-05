@@ -24,7 +24,6 @@ const Discuss = (props) => {
     (async function () {
       try {
         const { data } = await API.get('discuss?page=' + currentPage);
-        console.log(data);
         setPostCount(data.count);
         setPosts([...data.posts]);
       } catch (err) {

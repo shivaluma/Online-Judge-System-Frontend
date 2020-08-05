@@ -19,13 +19,11 @@ const Post = (props) => {
   const [currentVote, setCurrentVote] = useState(null);
 
   const changeVoteHandler = async (typeVote) => {
+    if (currentVote === typeVote) return;
     try {
-      const voteResult = await API.post(
-        'discuss/' + props.match.params.discussId + '/vote',
-        {
-          typeVote: typeVote,
-        }
-      );
+      await API.post('discuss/' + props.match.params.discussId + '/vote', {
+        typeVote: typeVote,
+      });
       setCurrentVote(typeVote);
       const value = typeVote === 'up' ? 1 : -1;
       const newPostData = { ...postData };
@@ -46,13 +44,13 @@ const Post = (props) => {
   useEffect(() => {
     (async function () {
       try {
-        const [postData, voteData] = await Promise.all([
+        const [postData, voteData] = await Promise.allSettled([
           API.get('discuss/' + props.match.params.discussId),
           API.get('discuss/' + props.match.params.discussId + '/vote'),
         ]);
-        setPostData(postData.data.discuss);
+        setPostData(postData.value.data.discuss);
 
-        setCurrentVote(voteData.data.vote.typeVote);
+        setCurrentVote(voteData.value.data.vote.typeVote);
       } catch (err) {
         console.log(err.response);
       }
