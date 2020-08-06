@@ -1,72 +1,152 @@
-import React, { createElement, useState } from 'react';
-import { Comment, Tooltip, Avatar } from 'antd';
+import React, { useState } from 'react';
+import { FaReply, FaRegComment } from 'react-icons/fa';
+import { Comment, Tooltip, Avatar, Spin } from 'antd';
 import moment from 'moment';
-import {
-  DislikeOutlined,
-  LikeOutlined,
-  DislikeFilled,
-  LikeFilled,
-} from '@ant-design/icons';
+import CommentEditor from './CommentEditor';
+import API from '../../api';
+import { Link } from 'react-router-dom';
+const CommentWithAction = ({
+  discussId,
+  parentId,
+  commentData,
+  isRoot,
+  setShowParentEditor,
+  setContentParentEditor,
+}) => {
+  const [showEditor, setShowEditor] = useState(false);
+  const [content, setContent] = useState('');
+  const [childComments, setChildComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showChild, setShowChild] = useState(false);
 
-const CommentWithAction = ({ children }) => {
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState(null);
+  const onSendCommentHandler = async () => {
+    const val = content.trim();
+    if (val.length === 0) return;
 
-  const like = () => {
-    setLikes(1);
-    setDislikes(0);
-    setAction('liked');
+    const response = await API.post('discuss/' + discussId + '/comment', {
+      content: val,
+      parentId: parentId,
+    });
+
+    setContent('');
+    setShowEditor(false);
+
+    if (childComments.length >= 10) childComments.shift();
+    setChildComments([...childComments, { ...response.data.data }]);
   };
 
-  const dislike = () => {
-    setLikes(0);
-    setDislikes(1);
-    setAction('disliked');
+  const loadChildCommentsHandler = async (commentId) => {
+    setLoading(true);
+    const response = await API.get(
+      'discuss/' +
+        discussId +
+        '/comment?page=1&parentId=' +
+        commentId +
+        '&sort=DESC'
+    );
+
+    setChildComments(response.data.data.comments);
+    setLoading(false);
   };
 
   const actions = [
-    <Tooltip key='comment-basic-like' title='Like'>
-      <span onClick={like}>
-        {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
-        <span className='comment-action'>{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key='comment-basic-dislike' title='Dislike'>
-      <span onClick={dislike}>
-        {React.createElement(
-          action === 'disliked' ? DislikeFilled : DislikeOutlined
-        )}
-        <span className='comment-action'>{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span key='comment-basic-reply-to'>Reply to</span>,
+    <span
+      key='comment-basic-reply-to'
+      onClick={() => {
+        if (isRoot) {
+          setShowEditor(true);
+          return;
+        }
+        setShowParentEditor(true);
+        setContentParentEditor('@' + commentData.authorUsername + ' ');
+      }}
+    >
+      <FaReply className='inline-block mr-2' />
+      Reply to
+    </span>,
   ];
 
+  if (isRoot) {
+    actions.push(
+      <span
+        key='comment-basic-reply-to'
+        onClick={() => {
+          if (showChild) {
+            setShowChild(false);
+            return;
+          }
+
+          commentData.subComment > 0 &&
+            loadChildCommentsHandler(commentData.id);
+          setShowChild(true);
+        }}
+      >
+        <FaRegComment className='inline-block mr-2' />
+        {showChild ? 'Hide' : 'Show'} {commentData.subComment} replies
+      </span>
+    );
+  }
+
+  const parsedContent = commentData.content.split(' ').map((word, index) => {
+    if (word[0] === '@') {
+      return (
+        <Link key={index} to={'/profile/' + word.substr(1, word.length)}>
+          <span className='text-blue-800'>{word}</span>{' '}
+        </Link>
+      );
+    }
+    return <React.Fragment key={index}>{word + ' '}</React.Fragment>;
+  });
   return (
     <Comment
       actions={actions}
-      author={<a>Han Solo</a>}
+      author={<a>{commentData.authorUsername}</a>}
       avatar={
         <Avatar
-          src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-          alt='Han Solo'
+          src={commentData.authorAvatar}
+          alt={commentData.authorUsername}
         />
       }
-      content={
-        <p>
-          We supply a series of design principles, practical patterns and high
-          quality design resources (Sketch and Axure), to help people create
-          their product prototypes beautifully and efficiently.
-        </p>
-      }
+      content={<p>{parsedContent}</p>}
       datetime={
-        <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-          <span>{moment().fromNow()}</span>
+        <Tooltip
+          title={moment(`${commentData.createdAt}`).format(
+            'YYYY-MM-DD HH:mm:ss'
+          )}
+        >
+          <span>{moment(`${commentData.createdAt}`).fromNow()}</span>
         </Tooltip>
       }
     >
-      {children}
+      {showEditor && (
+        <div className='-mt-6'>
+          <CommentEditor
+            content={content}
+            setContent={setContent}
+            toggleEditor={() => setShowEditor(false)}
+            onSendHandler={onSendCommentHandler}
+            disabled
+          />
+        </div>
+      )}
+      {loading ? (
+        <div className='h-32 flex items-center justify-center'>
+          <Spin size='large' />
+        </div>
+      ) : (
+        showChild &&
+        childComments.map((comment) => (
+          <CommentWithAction
+            key={comment.id}
+            discussId={discussId}
+            commentData={comment}
+            parentId={parentId}
+            setShowParentEditor={setShowEditor}
+            setContentParentEditor={setContent}
+            isRoot={false}
+          />
+        ))
+      )}
     </Comment>
   );
 };

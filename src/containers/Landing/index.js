@@ -38,7 +38,7 @@ export default () => (
             <nav className='flex'>
               <NavButton text='Premium' to='/premium' color='#fea116' />
               <NavButton text='Explore' to='/premium' color='#fff' />
-              <NavButton text='Product' to='/premium' color='#fff' />
+              <NavButton text='Discuss' to='/discuss' color='#fff' />
               <NavButton text='Sign In' to='/accounts/login' color='#fff' />
             </nav>
           </div>

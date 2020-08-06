@@ -1,6 +1,6 @@
 module.exports = {
   purge: {
-    enabled: true,
+    enabled: false,
     content: ['./src/**/*.html', './src/**/*.js'],
     options: {
       whitelist: ['h-0', 'h-10/12', 'h-1/2'],

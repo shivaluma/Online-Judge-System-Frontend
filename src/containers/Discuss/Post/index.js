@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaCaretUp, FaCaretDown, FaComment } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { Tooltip, Avatar, Tag, Menu, Spin } from 'antd';
+import { Tooltip, Avatar, Tag, Menu, Spin, Pagination } from 'antd';
 import { TiPin } from 'react-icons/ti';
-import TextArea from 'antd/lib/input/TextArea';
 import CommentWithAction from '../../../components/Forum/Comment';
 import ReactMarkdown from 'react-markdown';
 import API from '../../../api';
@@ -11,13 +10,17 @@ import Layout from '../../../hocs/Layout';
 import { withRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import '../../../assets/fix-markdown.css';
+import CommentEditor from '../../../components/Forum/CommentEditor';
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 
 const Post = (props) => {
   const [postData, setPostData] = useState(null);
   const [currentVote, setCurrentVote] = useState(null);
-
+  const [comments, setComments] = useState({ count: 0, data: [] });
+  const [content, setContent] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentSort, setCurrentSort] = useState('DESC');
   const changeVoteHandler = async (typeVote) => {
     if (currentVote === typeVote) return;
     try {
@@ -43,19 +46,62 @@ const Post = (props) => {
 
   useEffect(() => {
     (async function () {
-      try {
-        const [postData, voteData] = await Promise.allSettled([
-          API.get('discuss/' + props.match.params.discussId),
-          API.get('discuss/' + props.match.params.discussId + '/vote'),
-        ]);
-        setPostData(postData.value.data.discuss);
+      const [postData, voteData] = await Promise.allSettled([
+        API.get('discuss/' + props.match.params.discussId),
+        API.get('discuss/' + props.match.params.discussId + '/vote'),
+        API.put('discuss/' + props.match.params.discussId + '/view'),
+      ]);
+      console.log('Post: ', postData);
 
-        setCurrentVote(voteData.value.data.vote.typeVote);
-      } catch (err) {
-        console.log(err.response);
-      }
+      console.log('Votes: ', voteData);
+
+      setPostData(postData.value.data.discuss);
+      setCurrentVote(voteData.value.data.vote?.typeVote || null);
     })();
   }, [props.match.params.discussId]);
+
+  useEffect(() => {
+    (async function () {
+      const commentData = await API.get(
+        'discuss/' +
+          props.match.params.discussId +
+          `/comment?page=${currentPage}&sort=${currentSort}&parentId=` +
+          null
+      );
+      console.log(commentData);
+
+      setComments({
+        count: commentData.data.data.count,
+        data: [...commentData.data.data.comments],
+      });
+    })();
+  }, [props.match.params.discussId, currentPage, currentSort]);
+
+  const onSendHandler = async () => {
+    const val = content.trim();
+    if (val.length === 0) return;
+    const response = await API.post(
+      'discuss/' + props.match.params.discussId + '/comment',
+      {
+        content: val,
+        parentId: null,
+      }
+    );
+
+    const newComments = comments.data.slice();
+    newComments.pop();
+    setComments({
+      count: comments.count + 1,
+      data: [response.data.data, ...newComments],
+    });
+    setContent('');
+    console.log(response);
+  };
+
+  const handleChangeSortType = (e) => {
+    if (currentSort === e.key) return;
+    setCurrentSort(e.key);
+  };
 
   return (
     <div style={{ backgroundColor: 'rgb(245,245,245)' }}>
@@ -166,55 +212,48 @@ const Post = (props) => {
                     }}
                   >
                     <FaComment />{' '}
-                    <span className='text-xs ml-2'>Comments : 24</span>
+                    <span className='text-xs ml-2'>
+                      Comments : {comments.count}
+                    </span>
                   </span>
 
                   <Menu
                     className='text-xs bg-gray-100 flex items-center border-0'
                     theme='light'
                     mode='horizontal'
+                    onClick={handleChangeSortType}
                     defaultSelectedKeys={['newest-to-oldest']}
                     style={{ backgroundColor: 'transparent' }}
                   >
-                    <Menu.Item key='newest-to-oldest'>
-                      Newest To Oldest
-                    </Menu.Item>
-                    <Menu.Item key='oldest-to-newest'>
-                      Oldest To Newest
-                    </Menu.Item>
+                    <Menu.Item key='DESC'>Newest To Oldest</Menu.Item>
+                    <Menu.Item key='ASC'>Oldest To Newest</Menu.Item>
                   </Menu>
                 </div>
-
-                <div className='m-4 flex'>
-                  <TextArea
-                    className='outline-none rounded-l-md hover:outline-none'
-                    rows={2}
-                    style={{ resize: 'none' }}
-                    placeholder='Enter comment here (Markdown is supported)...'
-                    autoSize={{ minRows: 2, maxRows: 6 }}
-                  />
-
-                  <div className='w-16 rounded-r-md border-t border-r border-b border-gray-400 flex flex-col items-center overflow-hidden'>
-                    <button className='text-xs py-1 border-b border-gray-400 w-full focus:outline-none'>
-                      View
-                    </button>
-
-                    <button
-                      className='text-xs py-1 flex-grow w-full text-white focus:outline-none'
-                      style={{
-                        background: 'linear-gradient(35deg, #546e7a, #37474f)',
-                      }}
-                    >
-                      Send
-                    </button>
-                  </div>
-                </div>
+                <CommentEditor
+                  content={content}
+                  setContent={setContent}
+                  onSendHandler={onSendHandler}
+                />
                 <div className='px-4'>
-                  <CommentWithAction>
-                    <CommentWithAction />
-                  </CommentWithAction>
-                  <CommentWithAction />
-                  <CommentWithAction />
+                  {comments.data.map((comment, index) => {
+                    return (
+                      <CommentWithAction
+                        key={comment.id}
+                        commentData={comment}
+                        parentId={comment.id}
+                        isRoot
+                        discussId={props.match.params.discussId}
+                      />
+                    );
+                  })}
+                </div>
+
+                <div className='w-full py-3 px-8'>
+                  <Pagination
+                    defaultCurrent={currentPage}
+                    total={comments.count}
+                    onChange={(page) => setCurrentPage(page)}
+                  />
                 </div>
               </>
             ) : (
