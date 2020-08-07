@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Layout from '../../hocs/Layout';
-import { Menu, Button, Pagination, Empty } from 'antd';
+import { Menu, Button, Pagination, Empty, Spin } from 'antd';
 import Editor from '../../components/Forum/Editor';
 import PostTile from '../../components/Forum/PostTile';
 import { withRouter, Link } from 'react-router-dom';
@@ -16,11 +16,11 @@ const Discuss = (props) => {
 
   const [postCount, setPostCount] = useState(0);
   const [posts, setPosts] = useState([]);
-
   const [query, setQuery] = useState({
     page: 1,
     orderBy: 'newest_to_oldest',
     search: '',
+    isSet: false,
   });
   const openEditor = useCallback(() => {
     setMode('1/2');
@@ -30,28 +30,23 @@ const Discuss = (props) => {
 
   useEffect(() => {
     let params = new URLSearchParams(props.location.search);
-    const page = params.get('page');
-    const orderBy = params.get('orderBy');
-    const search = params.get('search');
-    if (!page || !orderBy) {
-      props.history.replace({
-        pathname: '/discuss',
-        search: `?page=${page || 1}&orderBy=${
-          orderBy || 'newest_to_oldest'
-        }&search=${search || ''}`,
-      });
-      return;
-    }
+    const page = params.get('page') || 1;
+    const orderBy = params.get('orderBy') || 'newest_to_oldest';
+    const search = params.get('search') || '';
 
-    setQuery({
-      page,
-      orderBy,
-      search,
+    setQuery({ page, orderBy, search, isSet: true });
+    props.history.replace({
+      pathname: '/discuss',
+      search: `?page=${page || 1}&orderBy=${
+        orderBy || 'newest_to_oldest'
+      }&search=${search}`,
     });
-  }, [props.location.search, props.history]);
+  }, []);
 
   useEffect(() => {
+    if (query.isSet === false) return;
     (async function () {
+      setLoading(true);
       try {
         const { data } = await API.get(
           `discuss?page=${query.page}&orderBy=${query.orderBy}&search=${searchQuery} `
@@ -62,8 +57,16 @@ const Discuss = (props) => {
       } catch (err) {
         console.log(err.response);
       }
+      setLoading(false);
     })();
-  }, [query.page, query.orderBy, searchQuery]);
+  }, [
+    props.location.search,
+    props.history,
+    query.page,
+    query.orderBy,
+    searchQuery,
+    query.isSet,
+  ]);
 
   const [isError, setIsError] = useState(false);
   const editorRef = useRef(null);
@@ -95,13 +98,14 @@ const Discuss = (props) => {
   }, [value, props.history]);
 
   useEffect(() => {
+    if (query.isSet === false) return;
     props.history.push({
       pathname: '/discuss',
       search: `?page=${query.page || 1}&orderBy=${
         query.orderBy || 'newest_to_oldest'
       }&search=${searchQuery || ''}`,
     });
-  }, [searchQuery, props.history, query.orderBy, query.page]);
+  }, [searchQuery, props.history, query.orderBy, query.page, query.isSet]);
 
   const onPageChangeHandler = (page, pageNum) => {
     setQuery({ ...query, page: page });
@@ -149,13 +153,20 @@ const Discuss = (props) => {
                 </Button>
               </div>
             </div>
-            {posts.map((post, index) => (
-              <Link key={index} to={props.match.path + '/' + post.id}>
-                <PostTile post={post} />
-              </Link>
-            ))}
+            {!isLoading &&
+              posts.map((post, index) => (
+                <Link key={index} to={props.match.path + '/' + post.id}>
+                  <PostTile post={post} />
+                </Link>
+              ))}
 
-            {posts.length === 0 && <Empty className='py-20' />}
+            {isLoading && (
+              <div className='h-64 w-full flex items-center justify-center'>
+                <Spin size='large' />
+              </div>
+            )}
+
+            {posts.length === 0 && !isLoading && <Empty className='py-20' />}
 
             <div className='px-6 py-2 border-t'>
               <Pagination

@@ -36,7 +36,6 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
     <div
       className='w-full h-12 border-0'
       style={{
-        //   background: 'linear-gradient(15deg, #8e2de2, #4a00e0)',
         background: '#222',
       }}
     >
@@ -52,7 +51,7 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
           </span>
         </Link>
 
-        <nav className='list-none flex text-sm text-gray-500 ml-8'>
+        <nav className='list-none flex text-sm text-gray-1000 ml-8'>
           <li className='hover:text-gray-200 cursor-pointer'>Explore</li>
           <Link to='/problemset'>
             <li className='ml-6 hover:text-gray-200 cursor-pointer'>

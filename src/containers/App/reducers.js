@@ -7,7 +7,6 @@ import {
   REMOVE_USER,
 } from './constants';
 
-// The initial state of the App
 export const initialState = {
   loading: true,
   error: false,

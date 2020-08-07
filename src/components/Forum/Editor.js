@@ -1,10 +1,9 @@
-import React, { memo, useState } from 'react';
-import { Button, Tag, Alert } from 'antd';
+import React, { memo } from 'react';
+import { Button, Alert } from 'antd';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
-// import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import '../../assets/fix-markdown.css';
 import EditableTagGroup from '../UI/EditableTagGroup';
@@ -17,7 +16,7 @@ const mdParser = new MarkdownIt({
       } catch (__) {}
     }
 
-    return ''; // use external default escaping
+    return '';
   },
 });
 const Editor = ({
@@ -124,12 +123,9 @@ const Editor = ({
         </div>
         <div className='w-full h-full pt-3 markdown-body'>
           <MdEditor
-            //value={value.content}
-
             ref={editorRef}
             style={{ height: 'calc(100% - 100px)', marginBottom: '5px' }}
             renderHTML={(text) => mdParser.render(text)}
-            //onChange={handleEditorChange}
           />
 
           <EditableTagGroup value={value} setValue={setValue} />

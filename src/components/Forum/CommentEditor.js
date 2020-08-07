@@ -18,7 +18,6 @@ const CommentEditor = ({
   const [loadUserDebounce] = useDebouncedCallback(loadUser, 300);
 
   return (
-    //user/find?query=asdd
     <div className='m-4 flex'>
       <Mentions
         className='outline-none rounded-l-md hover:outline-none'

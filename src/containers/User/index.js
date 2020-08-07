@@ -139,7 +139,6 @@ const User = () => {
                   { date: '2020-01-01', count: 1 },
                   { date: '2020-01-03', count: 4 },
                   { date: '2020-06-06', count: 949 },
-                  // ...and so on
                 ]}
               />
             </div>

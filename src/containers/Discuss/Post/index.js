@@ -1,7 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FaCaretUp, FaCaretDown, FaComment } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { Tooltip, Avatar, Tag, Menu, Spin, Pagination } from 'antd';
+import {
+  Tooltip,
+  Avatar,
+  Tag,
+  Menu,
+  Spin,
+  Pagination,
+  Popconfirm,
+  Modal,
+} from 'antd';
+import { useSelector } from 'react-redux';
 import { TiPin } from 'react-icons/ti';
 import CommentWithAction from '../../../components/Forum/Comment';
 import ReactMarkdown from 'react-markdown';
@@ -11,6 +21,8 @@ import { withRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import '../../../assets/fix-markdown.css';
 import CommentEditor from '../../../components/Forum/CommentEditor';
+import Editor from '../../../components/Forum/Editor';
+
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 
@@ -20,7 +32,18 @@ const Post = (props) => {
   const [comments, setComments] = useState({ count: 0, data: [] });
   const [content, setContent] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [editMode, setEditMode] = useState(false);
   const [currentSort, setCurrentSort] = useState('DESC');
+  const [mode, setMode] = useState('0');
+  const editorRef = useRef(null);
+  const username = useSelector((state) => state.global.userData.username);
+
+  const [value, setValue] = useState({
+    title: '',
+    tags: [],
+  });
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const changeVoteHandler = async (typeVote) => {
     if (currentVote === typeVote) return;
     try {
@@ -56,7 +79,13 @@ const Post = (props) => {
       console.log('Votes: ', voteData);
 
       setPostData(postData.value.data.discuss);
-      setCurrentVote(voteData.value.data.vote?.typeVote || null);
+
+      setCurrentVote(voteData.value?.data?.vote?.typeVote || null);
+      setValue({
+        ...value,
+        title: postData.value.data.discuss.title,
+        tags: postData.value.data.discuss.Tags.map((tag) => tag.content),
+      });
     })();
   }, [props.match.params.discussId]);
 
@@ -89,7 +118,7 @@ const Post = (props) => {
     );
 
     const newComments = comments.data.slice();
-    newComments.pop();
+    if (newComments.length >= 10) newComments.pop();
     setComments({
       count: comments.count + 1,
       data: [response.data.data, ...newComments],
@@ -101,6 +130,65 @@ const Post = (props) => {
   const handleChangeSortType = (e) => {
     if (currentSort === e.key) return;
     setCurrentSort(e.key);
+  };
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.state.text = postData.content;
+    }
+  }, [editMode]);
+
+  const onUpdateItemHandler = async () => {
+    setLoading(true);
+    setValue({ ...value, isLoading: true });
+    const title = value.title.trim();
+    const content = editorRef.current.state.text.trim();
+    if (title.length === 0 || content.length === 0) {
+      setIsError(true);
+      setLoading(false);
+      return;
+    }
+    try {
+      await API.put('discuss/' + props.match.params.discussId, {
+        ...value,
+        content: content,
+      });
+
+      setPostData({
+        ...postData,
+        title: title,
+        content: content,
+        tags: value.tags,
+      });
+      setLoading(false);
+      setEditMode(false);
+    } catch (err) {
+      setLoading(false);
+      Modal.error({
+        title: 'Error occurs.',
+        content: 'Cannot update content of the post.',
+      });
+    }
+  };
+
+  const deleteRootComment = (commentId) => {
+    setComments({
+      count: comments.count - 1,
+      data: comments.data.filter((c) => c.id !== commentId),
+    });
+  };
+
+  const onDeleteItemHandler = async () => {
+    try {
+      await API.delete('discuss/' + props.match.params.discussId);
+
+      props.history.replace('/discuss');
+    } catch (err) {
+      Modal.error({
+        title: 'Error occurs.',
+        content: 'Cannot update content of the post.',
+      });
+    }
   };
 
   return (
@@ -127,12 +215,54 @@ const Post = (props) => {
                       <span className='ml-1'> Back</span>
                     </div>
                   </Link>
-                  <div className='text-lg flex items-center ml-3'>
-                    <Tooltip placement='top' title={'Pinned'}>
-                      <TiPin className='text-2xl mr-2' />
-                    </Tooltip>
+                  <div className='flex justify-between flex-grow'>
+                    <div className='text-lg flex items-center ml-3'>
+                      <Tooltip placement='top' title={'Pinned'}>
+                        <TiPin className='text-2xl mr-2' />
+                      </Tooltip>
 
-                    <h3 className='text-md'>{postData.title}</h3>
+                      <h3 className='text-md'>{postData.title}</h3>
+                    </div>
+
+                    {username === postData.authorUsername && (
+                      <div className='flex items-center px-4 text-gray-700'>
+                        <svg
+                          viewBox='0 0 24 24'
+                          width='1.2em'
+                          height='1.2em'
+                          className='fill-current mr-5'
+                          onClick={() => {
+                            setEditMode(true);
+                            setMode('1/2');
+                            console.log(editorRef.current);
+                          }}
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'
+                          ></path>
+                        </svg>
+                        <Popconfirm
+                          placement='bottom'
+                          title={'Are you sure to delete this discussion.'}
+                          onConfirm={onDeleteItemHandler}
+                          okText='Yes'
+                          cancelText='No'
+                        >
+                          <svg
+                            viewBox='0 0 24 24'
+                            width='1.2em'
+                            height='1.2em'
+                            className='fill-current'
+                          >
+                            <path
+                              fillRule='evenodd'
+                              d='M5 19V7h14v12c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2zM7 9v10h10V9H7zm7.5-5H20v2H4V4h5.5l1-1h3l1 1zM9 11h2v8H9v-8zm4 0h2v8h-2v-8z'
+                            ></path>
+                          </svg>
+                        </Popconfirm>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className='flex'>
@@ -241,6 +371,8 @@ const Post = (props) => {
                         key={comment.id}
                         commentData={comment}
                         parentId={comment.id}
+                        currentUsername={username}
+                        deleteRoot={deleteRootComment}
                         isRoot
                         discussId={props.match.params.discussId}
                       />
@@ -263,6 +395,18 @@ const Post = (props) => {
             )}
           </div>
         </div>
+        {editMode && (
+          <Editor
+            mode={mode}
+            setMode={setMode}
+            value={value}
+            setValue={setValue}
+            isError={isError}
+            editorRef={editorRef}
+            onSubmit={onUpdateItemHandler}
+            loading={isLoading}
+          />
+        )}
       </Layout>
     </div>
   );
