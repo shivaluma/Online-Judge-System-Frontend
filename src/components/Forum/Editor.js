@@ -6,7 +6,7 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import '../../assets/fix-markdown.css';
-import EditableTagGroup from '../UI/EditableTagGroup';
+import EditableTagGroup from '../UI/Tag/EditableTagGroup';
 
 const mdParser = new MarkdownIt({
   highlight: function (str, lang) {

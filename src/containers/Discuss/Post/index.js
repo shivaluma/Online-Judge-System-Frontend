@@ -42,6 +42,7 @@ const Post = (props) => {
     title: '',
     tags: [],
   });
+
   const [isLoading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const changeVoteHandler = async (typeVote) => {
@@ -79,12 +80,15 @@ const Post = (props) => {
       console.log('Votes: ', voteData);
 
       setPostData(postData.value.data.discuss);
+      const currentTag = postData.value.data.discuss.Tags.map(
+        (tag) => tag.content
+      );
 
       setCurrentVote(voteData.value?.data?.vote?.typeVote || null);
       setValue({
         ...value,
         title: postData.value.data.discuss.title,
-        tags: postData.value.data.discuss.Tags.map((tag) => tag.content),
+        tags: currentTag,
       });
     })();
   }, [props.match.params.discussId]);
@@ -152,16 +156,18 @@ const Post = (props) => {
       await API.put('discuss/' + props.match.params.discussId, {
         ...value,
         content: content,
+        previousTags: postData.Tags.map((tag) => tag.content),
       });
+
+      setLoading(false);
+      setEditMode(false);
 
       setPostData({
         ...postData,
         title: title,
         content: content,
-        tags: value.tags,
+        Tags: value.tags.map((tag) => ({ content: tag })),
       });
-      setLoading(false);
-      setEditMode(false);
     } catch (err) {
       setLoading(false);
       Modal.error({

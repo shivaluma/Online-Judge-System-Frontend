@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from './Form/Input';
+import Input from './Input';
 
 export default ({
   mode,

@@ -6,14 +6,18 @@ import Editor from '../../components/Forum/Editor';
 import PostTile from '../../components/Forum/PostTile';
 import { withRouter, Link } from 'react-router-dom';
 import API from '../../api';
-
+import Modal from 'antd/lib/modal/Modal';
+import { useSelector } from 'react-redux';
+import AuthModal from '../Auth/AuthModal';
+import Search from 'antd/lib/input/Search';
+import TagWithCount from '../../components/UI/Tag/TagWithCount';
 const Discuss = (props) => {
   const [mode, setMode] = useState('0');
   const [value, setValue] = useState({
     title: '',
     tags: [],
   });
-
+  const [showModal, setShowModal] = useState(false);
   const [postCount, setPostCount] = useState(0);
   const [posts, setPosts] = useState([]);
   const [query, setQuery] = useState({
@@ -22,26 +26,34 @@ const Discuss = (props) => {
     search: '',
     isSet: false,
   });
-  const openEditor = useCallback(() => {
-    setMode('1/2');
-  }, []);
+
+  const [tagData, setTagData] = useState({
+    total: 0,
+    tags: [],
+  });
 
   const [searchQuery] = useDebounce(query.search, 400);
-
+  const isLogin = useSelector((state) => state.global.currentUser);
   useEffect(() => {
     let params = new URLSearchParams(props.location.search);
     const page = params.get('page') || 1;
     const orderBy = params.get('orderBy') || 'newest_to_oldest';
     const search = params.get('search') || '';
 
-    setQuery({ page, orderBy, search, isSet: true });
     props.history.replace({
       pathname: '/discuss',
-      search: `?page=${page || 1}&orderBy=${
-        orderBy || 'newest_to_oldest'
-      }&search=${search}`,
+      search: `?page=${page}&orderBy=${orderBy}&search=${search}`,
     });
-  }, []);
+    setQuery({ page, orderBy, search, isSet: true });
+  }, [props.history, props.location.search]);
+
+  useEffect(() => {
+    if (!query.isSet) return;
+    (async function () {
+      const { data } = await API.get(`discuss/tags`);
+      setTagData(data);
+    })();
+  }, [query.isSet]);
 
   useEffect(() => {
     if (query.isSet === false) return;
@@ -67,7 +79,6 @@ const Discuss = (props) => {
     searchQuery,
     query.isSet,
   ]);
-
   const [isError, setIsError] = useState(false);
   const editorRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
@@ -97,15 +108,13 @@ const Discuss = (props) => {
     }
   }, [value, props.history]);
 
-  useEffect(() => {
-    if (query.isSet === false) return;
-    props.history.push({
-      pathname: '/discuss',
-      search: `?page=${query.page || 1}&orderBy=${
-        query.orderBy || 'newest_to_oldest'
-      }&search=${searchQuery || ''}`,
-    });
-  }, [searchQuery, props.history, query.orderBy, query.page, query.isSet]);
+  const openEditor = useCallback(() => {
+    if (!isLogin) {
+      setShowModal(true);
+      return;
+    }
+    setMode('1/2');
+  }, [isLogin]);
 
   const onPageChangeHandler = (page, pageNum) => {
     setQuery({ ...query, page: page });
@@ -176,6 +185,27 @@ const Discuss = (props) => {
               />
             </div>
           </div>
+          <div className='w-3/12 bg-white rounded-md border border-gray-300 ml-2 self-start'>
+            <div className='text-md flex px-3 text-black border-b border-gray-300 h-12 items-center text-gray-700 border-b border-gray-200'>
+              Tags
+            </div>
+            <div className='px-3 py-4'>
+              <Search
+                placeholder='Search for tags...'
+                onSearch={(value) => console.log(value)}
+                className='w-full py-1 rounded-md'
+              />
+              <div className='flex mt-4 max-w-full flex-wrap'>
+                {tagData.tags.map((tag) => (
+                  <TagWithCount
+                    key={tag.id}
+                    text={tag.content}
+                    count={tag.count}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
         <Editor
           mode={mode}
@@ -187,6 +217,22 @@ const Discuss = (props) => {
           onSubmit={onSubmitHandler}
           loading={isLoading}
         />
+
+        <Modal
+          visible={showModal}
+          footer={null}
+          width={400}
+          bodyStyle={{ padding: 0 }}
+          onCancel={() => {
+            setShowModal(false);
+          }}
+        >
+          <AuthModal
+            isLoginMode={true}
+            hideModal={setShowModal}
+            history={props.history}
+          />
+        </Modal>
       </Layout>
     </div>
   );

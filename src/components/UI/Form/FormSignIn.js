@@ -1,6 +1,6 @@
 import React from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
-import Input from './Form/Input';
+import Input from './Input';
 export default ({
   username,
   pwd,

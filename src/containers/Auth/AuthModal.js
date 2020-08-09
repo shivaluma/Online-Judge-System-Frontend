@@ -6,16 +6,14 @@ import FormSignIn from '../../components/UI/Form/FormSignIn';
 import FormSignUp from '../../components/UI/Form/FormSignUp';
 import isEmail from 'validator/lib/isEmail';
 import API from '../../api';
-
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { GoogleLogin } from 'react-google-login';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { updateUser } from '../App/actions';
-import Layout from '../../hocs/Layout';
-
-const Auth = ({ isLoginMode, history, updateUser }) => {
+const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
+  console.log(hideModal);
   const [mode, setMode] = useState(isLoginMode);
   const [formInfo, setFormInfo] = useState({
     username: {
@@ -162,12 +160,13 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
       if (loginResult.status === 200) {
         localStorage.setItem('brosjudge-token', loginResult.data.accessToken);
         updateUser(loginResult.data.user);
-        history.replace('/');
+        hideModal(false);
       }
     } catch (err) {
-      if (err.response.status === 302) {
+      if (err?.response?.status === 302) {
         history.push({
-          pathname: `/accounts/social-login/`,
+          pathname: `/accounts/social-login`,
+          search: `?next=${history.location.pathname}/${history.location.search}`,
           state: {
             email: err.response.data.email,
             token: err.response.data.usernameToken,
@@ -179,6 +178,7 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
           description: err.response.data.message,
         });
       }
+      console.log(err);
     }
   };
   const googleLoginHandler = async (response) => {
@@ -191,12 +191,14 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
       if (loginResult.status === 200) {
         localStorage.setItem('brosjudge-token', loginResult.data.accessToken);
         updateUser(loginResult.data.user);
-        history.replace('/');
+        hideModal(false);
       }
     } catch (err) {
+      if (err.response === null) return;
       if (err.response.status === 302) {
         history.push({
           pathname: `/accounts/social-login/`,
+          search: `?next=${history.location.pathname}/${history.location.search}`,
           state: {
             email: err.response.data.email,
             token: err.response.data.usernameToken,
@@ -272,113 +274,100 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
   };
 
   return (
-    <Layout className='min-h-screen flex flex-col' hideFooter>
-      <div
-        className='w-full flex-grow flex'
-        style={{
-          backgroundImage:
-            'radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%)',
-        }}
-      >
-        <div
-          className='mx-auto text-center bg-white self-center'
-          style={{ width: '400px' }}
-        >
-          <div className='flex flex-col items-center pt-12'>
-            <FaCode className='text-2xl text-black' />
-            <span className='typo-round text-2xl'>BrosCode</span>
-          </div>
-          {mode ? (
-            <FormSignIn
-              username={formInfo.username}
-              pwd={formInfo.pwd}
-              handler={formChangeHandler}
-              submitHandler={loginHandler}
-              wrongInfo={wrongInfo}
-              loading={isLoading}
-            />
-          ) : (
-            <FormSignUp
-              username={formInfo.username}
-              pwd={formInfo.pwd}
-              confirmPwd={formInfo.confirmPwd}
-              email={formInfo.email}
-              handler={formChangeHandler}
-              submitHandler={registerHandler}
-              wrongInfo={wrongInfo}
-              loading={isLoading}
-            />
-          )}
-          {mode ? (
-            <div className='mt-3 text-sm px-8 flex justify-between text-teal-700'>
-              <span>Forgot Password?</span>
-              <span
-                className='cursor-pointer hover:underline'
-                onClick={() => setMode(false)}
-              >
-                Sign Up
-              </span>
-            </div>
-          ) : (
-            <div className='mt-3 text-sm px-8 text-center text-gray-500'>
-              Have an account?{' '}
-              <span
-                className='cursor-pointer hover:underline text-teal-700'
-                onClick={() => setMode(true)}
-              >
-                Login
-              </span>
-            </div>
-          )}
-
-          <div className='mx-auto pb-1 mt-2'>
-            <span className='text-center text-sm text-gray-500'>
-              or sign {mode ? 'up' : 'in'} with
-            </span>
-          </div>
-
-          <div className='flex justify-between px-8 mt-1 pb-16'>
-            <FacebookLogin
-              appId='297734224952735'
-              callback={facebookLoginHandler}
-              render={(renderProps) => (
-                <button
-                  className='text-blue-700 px-10 py-3 border-blue-700 border-2 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-300 focus:outline-none'
-                  onClick={renderProps.onClick}
-                >
-                  <FaFacebookF />
-                </button>
-              )}
-            />
-
-            <GoogleLogin
-              clientId='796130238984-t9jd9p7s9178cngceio9ctipia1rumfm.apps.googleusercontent.com'
-              render={(renderProps) => (
-                <button
-                  className='text-red-700 px-10 py-3 border-red-700 border-2 rounded-lg hover:bg-red-700 hover:text-white transition-all duration-300 focus:outline-none'
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FaGoogle />
-                </button>
-              )}
-              buttonText='Login'
-              onSuccess={googleLoginHandler}
-              onFailure={googleLoginHandler}
-              cookiePolicy={'single_host_origin'}
-            />
-
-            <button className='text-black px-10 py-3 border-black border-2 rounded-lg hover:bg-black hover:text-white transition-all duration-300 focus:outline-none'>
-              <FaGithub />
-            </button>
-          </div>
-        </div>
+    <div className='mx-auto text-center bg-white' style={{ width: '400px' }}>
+      <div className='flex flex-col items-center pt-12'>
+        <FaCode className='text-2xl text-black' />
+        <span className='typo-round text-2xl'>BrosCode</span>
       </div>
-    </Layout>
+      {mode ? (
+        <FormSignIn
+          username={formInfo.username}
+          pwd={formInfo.pwd}
+          handler={formChangeHandler}
+          submitHandler={loginHandler}
+          wrongInfo={wrongInfo}
+          loading={isLoading}
+        />
+      ) : (
+        <FormSignUp
+          username={formInfo.username}
+          pwd={formInfo.pwd}
+          confirmPwd={formInfo.confirmPwd}
+          email={formInfo.email}
+          handler={formChangeHandler}
+          submitHandler={registerHandler}
+          wrongInfo={wrongInfo}
+          loading={isLoading}
+        />
+      )}
+      {mode ? (
+        <div className='mt-3 text-sm px-8 flex justify-between text-teal-700'>
+          <span>Forgot Password?</span>
+          <span
+            className='cursor-pointer hover:underline'
+            onClick={() => setMode(false)}
+          >
+            Sign Up
+          </span>
+        </div>
+      ) : (
+        <div className='mt-3 text-sm px-8 text-center text-gray-500'>
+          Have an account?{' '}
+          <span
+            className='cursor-pointer hover:underline text-teal-700'
+            onClick={() => setMode(true)}
+          >
+            Login
+          </span>
+        </div>
+      )}
+
+      <div className='mx-auto pb-1 mt-2'>
+        <span className='text-center text-sm text-gray-500'>
+          or sign {mode ? 'up' : 'in'} with
+        </span>
+      </div>
+
+      <div className='flex justify-between px-8 mt-1 pb-16'>
+        <FacebookLogin
+          appId='297734224952735'
+          callback={facebookLoginHandler}
+          render={(renderProps) => (
+            <button
+              className='text-blue-700 px-10 py-3 border-blue-700 border-2 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-300 focus:outline-none'
+              onClick={renderProps.onClick}
+            >
+              <FaFacebookF />
+            </button>
+          )}
+        />
+
+        <GoogleLogin
+          clientId='796130238984-t9jd9p7s9178cngceio9ctipia1rumfm.apps.googleusercontent.com'
+          render={(renderProps) => (
+            <button
+              className='text-red-700 px-10 py-3 border-red-700 border-2 rounded-lg hover:bg-red-700 hover:text-white transition-all duration-300 focus:outline-none'
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            >
+              <FaGoogle />
+            </button>
+          )}
+          buttonText='Login'
+          onSuccess={googleLoginHandler}
+          onFailure={googleLoginHandler}
+          cookiePolicy={'single_host_origin'}
+        />
+
+        <button className='text-black px-10 py-3 border-black border-2 rounded-lg hover:bg-black hover:text-white transition-all duration-300 focus:outline-none'>
+          <FaGithub />
+        </button>
+      </div>
+    </div>
   );
 };
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ updateUser }, dispatch);
 
-export default withRouter(connect(null, mapDispatchToProps)(Auth));
+export default withRouter(connect(null, mapDispatchToProps)(AuthModal));

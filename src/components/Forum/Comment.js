@@ -40,6 +40,8 @@ const CommentWithAction = ({
     setChildComments([...childComments, { ...response.data.data }]);
   };
 
+
+
   const loadChildCommentsHandler = async (commentId) => {
     setLoading(true);
     const response = await API.get(
@@ -78,7 +80,7 @@ const CommentWithAction = ({
 
   const deleteChildComment = (childId) => {
     setChildComments(childComments.filter((comment) => comment.id !== childId));
-    commentData.subComment--;
+    
   };
 
   const onDeleteItemHandler = async () => {

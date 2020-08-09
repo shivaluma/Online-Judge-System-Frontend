@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import Header from '../../components/UI/Header';
 import { FaCode } from 'react-icons/fa';
-import FormSocial from '../../components/UI/FormSocial';
+import FormSocial from '../../components/UI/Form/FormSocial';
 import API from '../../api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
