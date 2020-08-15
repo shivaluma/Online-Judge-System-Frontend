@@ -12,6 +12,7 @@ import Index from '../Index';
 import Landing from '../Landing';
 import { loadUser, userLoadingError } from './actions';
 import ProblemSet from '../ProblemSet';
+import Problem from '../Problem';
 
 const Login = React.lazy(
   () =>
@@ -134,6 +135,8 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
               </Suspense>
             )}
           />
+
+          <Route path='/problem/:problemId' component={Problem} />
 
           <Route
             exact

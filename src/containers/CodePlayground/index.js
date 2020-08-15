@@ -117,7 +117,6 @@ export default () => {
               isHeaderCollapse ? 'CodeMirror-expand' : 'CodeMirror-compress'
             }`}
           />
-
           <div
             className='w-full flex items-center p-1 border-t border-gray-400'
             style={{ height: '50px' }}

@@ -8,6 +8,7 @@ import { Select } from 'antd';
 import AlgorithmImage from '../../assets/images/algorithm.png';
 import DatabaseImage from '../../assets/images/database.png';
 import ShellImage from '../../assets/images/shell.png';
+import ProblemTable from './Table';
 const ProblemSet = () => {
   const { Option } = Select;
   return (
@@ -61,22 +62,34 @@ const ProblemSet = () => {
         </div>
 
         <div className='mt-6 border-t py-5'>
-          <div className='rounded-full text-xs font-semibold bg-blue-700 inline-block text-white py-1 px-2'>
+          <div
+            className='rounded-full font-semibold bg-blue-700 inline-block text-white px-2'
+            style={{ fontSize: '12px' }}
+          >
             12/56 Solved
           </div>
           <span className='px-2 py-1 text-gray-700'>&nbsp;-&nbsp;</span>
-          <div className='rounded-full text-xs font-semibold bg-green-500 inline-block text-white py-1 px-2 mr-1'>
+          <div
+            className='rounded-full font-semibold bg-green-500 inline-block text-white px-2 mr-1'
+            style={{ fontSize: '12px' }}
+          >
             Easy 12
           </div>
-          <div className='rounded-full text-xs font-semibold bg-orange-500 inline-block text-white py-1 px-2 mr-1'>
+          <div
+            className='rounded-full font-semibold bg-orange-500 inline-block text-white px-2 mr-1'
+            style={{ fontSize: '12px' }}
+          >
             Medium 12
           </div>
-          <div className='rounded-full text-xs font-semibold bg-red-500 inline-block text-white py-1 px-2 mr-1'>
+          <div
+            className='rounded-full font-semibold bg-red-500 inline-block text-white px-2 mr-1'
+            style={{ fontSize: '12px' }}
+          >
             Hard 12
           </div>
         </div>
 
-        <div className='mt-5 border-t py-5'>
+        <div className='mt-5 border-t pt-5'>
           <div className='flex items-center'>
             <input
               placeholder='Search question titles or IDs '
@@ -104,6 +117,9 @@ const ProblemSet = () => {
               <Option value='hard'>Linked List</Option>
             </Select>
           </div>
+        </div>
+        <div className='mt-5 border-t border-gray-200 py-5'>
+          <ProblemTable />
         </div>
       </div>
       <Footer />

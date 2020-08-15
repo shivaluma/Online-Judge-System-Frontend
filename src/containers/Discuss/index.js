@@ -31,29 +31,35 @@ const Discuss = (props) => {
     total: 0,
     tags: [],
   });
-
+  const [tagQuery, setTagQuery] = useState('');
+  const [tagSelect, setTagSelect] = useState([]);
   const [searchQuery] = useDebounce(query.search, 400);
+  const [tagQueryDebounce] = useDebounce(tagQuery, 200);
   const isLogin = useSelector((state) => state.global.currentUser);
   useEffect(() => {
     let params = new URLSearchParams(props.location.search);
     const page = params.get('page') || 1;
     const orderBy = params.get('orderBy') || 'newest_to_oldest';
     const search = params.get('search') || '';
-
-    props.history.replace({
-      pathname: '/discuss',
-      search: `?page=${page}&orderBy=${orderBy}&search=${search}`,
-    });
+    const tag = params.get('tag');
+    const tagArray = Array.isArray(tag) ? tag : !tag ? [] : [tag];
+    setTagSelect(tagArray);
     setQuery({ page, orderBy, search, isSet: true });
-  }, [props.history, props.location.search]);
+  }, [props.history]);
 
   useEffect(() => {
     if (!query.isSet) return;
+    setTagLoading(true);
     (async function () {
-      const { data } = await API.get(`discuss/tags`);
+      const { data } = await API.get(
+        `discuss/tags?tag=${tagQueryDebounce}${tagSelect
+          .map((el) => `&tags=${el}`)
+          .join('')}`
+      );
       setTagData(data);
+      setTagLoading(false);
     })();
-  }, [query.isSet]);
+  }, [query.isSet, tagQueryDebounce, tagSelect]);
 
   useEffect(() => {
     if (query.isSet === false) return;
@@ -61,8 +67,13 @@ const Discuss = (props) => {
       setLoading(true);
       try {
         const { data } = await API.get(
-          `discuss?page=${query.page}&orderBy=${query.orderBy}&search=${searchQuery} `
+          `discuss?page=${query.page}&orderBy=${
+            query.orderBy
+          }&search=${searchQuery}${tagSelect
+            .map((tag) => `&tag=${tag}`)
+            .join('')}`
         );
+        console.log(data);
 
         setPostCount(data.count);
         setPosts([...data.posts]);
@@ -71,6 +82,12 @@ const Discuss = (props) => {
       }
       setLoading(false);
     })();
+    props.history.replace({
+      pathname: '/discuss',
+      search: `?page=${query.page}&orderBy=${
+        query.orderBy
+      }&search=${searchQuery}${tagSelect.map((tag) => `&tag=${tag}`).join('')}`,
+    });
   }, [
     props.location.search,
     props.history,
@@ -78,10 +95,12 @@ const Discuss = (props) => {
     query.orderBy,
     searchQuery,
     query.isSet,
+    tagSelect,
   ]);
   const [isError, setIsError] = useState(false);
   const editorRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
+  const [isTagLoading, setTagLoading] = useState(false);
 
   const onSubmitHandler = useCallback(async () => {
     setLoading(true);
@@ -118,6 +137,15 @@ const Discuss = (props) => {
 
   const onPageChangeHandler = (page, pageNum) => {
     setQuery({ ...query, page: page });
+  };
+
+  const onTagClickHandler = (tagContent) => {
+    if (tagSelect.includes(tagContent)) return;
+    setTagSelect([...tagSelect, tagContent]);
+  };
+
+  const onTagRemoveHandler = (tagContent) => {
+    setTagSelect(tagSelect.filter((tag) => tag !== tagContent));
   };
 
   return (
@@ -175,7 +203,7 @@ const Discuss = (props) => {
               </div>
             )}
 
-            {posts.length === 0 && !isLoading && <Empty className='py-20' />}
+            {!isLoading && posts.length === 0 && <Empty className='py-20' />}
 
             <div className='px-6 py-2 border-t'>
               <Pagination
@@ -190,19 +218,38 @@ const Discuss = (props) => {
               Tags
             </div>
             <div className='px-3 py-4'>
+              <div className='flex mb-3 max-w-full flex-wrap'>
+                {tagSelect.map((tag, index) => (
+                  <TagWithCount
+                    key={tag}
+                    text={tag}
+                    isSelected
+                    onClick={onTagClickHandler}
+                    onRemove={onTagRemoveHandler}
+                  />
+                ))}
+              </div>
               <Search
                 placeholder='Search for tags...'
-                onSearch={(value) => console.log(value)}
+                onChange={(event) => setTagQuery(event.target.value)}
                 className='w-full py-1 rounded-md'
               />
               <div className='flex mt-4 max-w-full flex-wrap'>
-                {tagData.tags.map((tag) => (
-                  <TagWithCount
-                    key={tag.id}
-                    text={tag.content}
-                    count={tag.count}
-                  />
-                ))}
+                {!isTagLoading &&
+                  tagData.tags.map((tag) => (
+                    <TagWithCount
+                      key={tag.id}
+                      text={tag.content}
+                      count={tag.count}
+                      onClick={onTagClickHandler}
+                    />
+                  ))}
+
+                {isTagLoading && (
+                  <div className='h-64 w-full flex items-center justify-center'>
+                    <Spin size='large' />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -18,9 +18,16 @@ html {
 
 .CodeMirror {
   font-family: monospace;
-  font-size: 17px;
+  font-size: 15px;
   height: 100% !important;
+  max-height: 100% !important;
+
   width: 100%;
+}
+
+.CodeMirror-scroll {
+  position: absolute !important;
+  width: 100% !important;
 }
 
 .CodeMirror-compress {
@@ -31,6 +38,9 @@ html {
   height: calc(100vh - 50px) !important;
 }
 
+.CodeMirror-problem-size {
+  height: calc(100vh - 132px) !important;
+}
 .typo-round {
   font-family: 'TypoRound', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -307,4 +317,9 @@ html {
 [class*='-col-rtl'] .comment-action {
   padding-right: 8px;
   padding-left: 0;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab,
+.ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+  padding: 4px 16px !important;
 }

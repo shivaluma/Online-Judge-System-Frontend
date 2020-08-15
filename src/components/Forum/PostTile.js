@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Tooltip } from 'antd';
+import { Avatar, Tooltip, Tag } from 'antd';
 import { TiPin } from 'react-icons/ti';
 import { FaCaretUp, FaRegEye, FaCaretDown } from 'react-icons/fa';
 import dayjs from 'dayjs';
@@ -20,6 +20,12 @@ const PostTile = ({ post }) => {
           <h3 className='text-base' style={{ color: '#212121' }}>
             {post.title}
           </h3>
+
+          <div className='ml-3'>
+            {post.Tags.map((tag, index) => (
+              <Tag key={index}>{tag.content}</Tag>
+            ))}
+          </div>
         </div>
 
         <span className='text-xs text-gray-500 mt-1'>
