@@ -79,13 +79,10 @@ const Discuss = (props) => {
             .map((tag) => `&tag=${tag}`)
             .join('')}`
         );
-        console.log(data);
 
         setPostCount(data.count);
         setPosts([...data.posts]);
-      } catch (err) {
-        console.log(err.response);
-      }
+      } catch (err) {}
       setLoading(false);
     })();
     props.history.replace({
@@ -126,7 +123,7 @@ const Discuss = (props) => {
         content,
         problemId: postData?.id || null,
       };
-      console.log(body);
+
       const response = await API.post('discuss', body);
       setLoading(false);
       props.history.push(
@@ -134,7 +131,6 @@ const Discuss = (props) => {
       );
     } catch (err) {
       setLoading(false);
-      console.log(err.response);
     }
   }, [value, props.history]);
 

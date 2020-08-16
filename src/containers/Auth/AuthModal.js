@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateUser } from '../App/actions';
 const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
-  console.log(hideModal);
   const [mode, setMode] = useState(isLoginMode);
   const [formInfo, setFormInfo] = useState({
     username: {
@@ -117,10 +116,9 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
 
     try {
       const response = await API.post('auth/signup', body);
-      console.log(response);
+
       setMode(true);
     } catch (err) {
-      console.log(err.response);
       if (
         err.response.data.duplicate &&
         err.response.data.duplicate.hasOwnProperty('username')
@@ -178,11 +176,9 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
           description: err.response.data.message,
         });
       }
-      console.log(err);
     }
   };
   const googleLoginHandler = async (response) => {
-    console.log(response);
     try {
       const loginResult = await API.post('auth/google', {
         ggAccessToken: response.accessToken,

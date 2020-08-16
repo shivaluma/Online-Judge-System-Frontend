@@ -23,7 +23,7 @@ const ProblemSet = () => {
       const response = await API.get(
         `/problem/list?page=${pageNum}&difficulty=${difficulty}&hasSolution=${hasSolution}`
       );
-      console.log(response.data.problems);
+
       setProblemList(response.data.problems);
       setLoading(false);
     })();

@@ -27,7 +27,6 @@ var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 
 const Post = (props) => {
-  console.log(props);
   const [postData, setPostData] = useState(null);
   const [currentVote, setCurrentVote] = useState(null);
   const [comments, setComments] = useState({ count: 0, data: [] });
@@ -64,9 +63,7 @@ const Post = (props) => {
         } else newPostData.downVote -= value;
       }
       setPostData(newPostData);
-    } catch (err) {
-      console.log(err.response);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -76,9 +73,6 @@ const Post = (props) => {
         API.get('discuss/' + props.match.params.discussId + '/vote'),
         API.put('discuss/' + props.match.params.discussId + '/view'),
       ]);
-      console.log('Post: ', postData);
-
-      console.log('Votes: ', voteData);
 
       setPostData(postData.value.data.discuss);
       const currentTag = postData.value.data.discuss.Tags.map(
@@ -102,7 +96,6 @@ const Post = (props) => {
           `/comment?page=${currentPage}&sort=${currentSort}&parentId=` +
           null
       );
-      console.log(commentData);
 
       setComments({
         count: commentData.data.data.count,
@@ -129,7 +122,6 @@ const Post = (props) => {
       data: [response.data.data, ...newComments],
     });
     setContent('');
-    console.log(response);
   };
 
   const handleChangeSortType = (e) => {
@@ -240,7 +232,6 @@ const Post = (props) => {
                           onClick={() => {
                             setEditMode(true);
                             setMode('1/2');
-                            console.log(editorRef.current);
                           }}
                         >
                           <path

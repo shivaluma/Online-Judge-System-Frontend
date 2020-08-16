@@ -39,7 +39,7 @@ export default () => {
   const sendCode = async () => {
     if (running) return;
     setIsRunning(true);
-    console.log(stdinRef.current);
+
     const response = await axios.post('http://localhost/submit', {
       src: utf8_to_b64(code),
       stdin: '',
@@ -55,7 +55,7 @@ export default () => {
         result.data.status !== 'Processing'
       ) {
         clearInterval(getResultInterval);
-        console.log(result.data);
+
         result.data.time = dayjs().format('h:mm:ss A');
         if (!result.data.isError) result.data.status = 'Success';
         setResultArr([result.data, ...resultArr]);

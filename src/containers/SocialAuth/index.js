@@ -86,14 +86,11 @@ const SocialAuth = (props) => {
         email: email.value,
         usernameToken: props.location?.state?.token || '',
       });
-      console.log('response : ', response);
-      console.log(props.history);
+
       localStorage.setItem('brosjudge-token', response.data.accessToken);
       props.updateUser(response.data.user);
       props.history.push('/');
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const debounceEmail = useRef(null);

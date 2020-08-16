@@ -31,7 +31,7 @@ class EditableTagGroup extends React.Component {
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    console.log(tags);
+
     this.props.setValue({ ...this.props.value, tags: tags });
     this.setState({
       tags,

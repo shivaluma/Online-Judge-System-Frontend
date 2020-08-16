@@ -119,10 +119,9 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
 
     try {
       const response = await API.post('auth/signup', body);
-      console.log(response);
+
       setMode(true);
     } catch (err) {
-      console.log(err.response);
       if (err.response.data.error[0].path === 'username') {
         const newUsername = { ...formInfo.username };
         newUsername.error = true;
@@ -176,7 +175,6 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
     }
   };
   const googleLoginHandler = async (response) => {
-    console.log(response);
     try {
       const loginResult = await API.post('auth/google', {
         ggAccessToken: response.accessToken,

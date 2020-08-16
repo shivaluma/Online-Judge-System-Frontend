@@ -30,7 +30,6 @@ require('codemirror/addon/edit/trailingspace');
 const { TabPane } = Tabs;
 const { Option } = Select;
 const Problem = (props) => {
-  console.log(props);
   const [language, changeLanguage] = useState('cpp');
   const [currentOption, setCurrentOption] = useState('description');
   const [problem, setProblem] = useState(null);
@@ -94,7 +93,7 @@ const Problem = (props) => {
       problemId: problem.id,
     });
     setLoading(false);
-    console.log(response.data);
+
     setSubmitResponse(response.data.result);
     response.data.submission.key = response.data.submission.updatedAt;
     setSubmissions([response.data.submission, ...submissions]);
