@@ -21,8 +21,9 @@ const ProblemSet = () => {
     setLoading(true);
     (async function () {
       const response = await API.get(
-        `/problem?page=${pageNum}&difficulty=${difficulty}&hasSolution=${hasSolution}`
+        `/problem/list?page=${pageNum}&difficulty=${difficulty}&hasSolution=${hasSolution}`
       );
+      console.log(response.data.problems);
       setProblemList(response.data.problems);
       setLoading(false);
     })();

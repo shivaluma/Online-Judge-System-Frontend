@@ -56,7 +56,9 @@ const Discuss = (props) => {
     setTagLoading(true);
     (async function () {
       const { data } = await API.get(
-        `discuss/tags?tag=${tagQueryDebounce}${tagSelect
+        `discuss/tags?problem=${
+          postData?.id || ''
+        }&tag=${tagQueryDebounce}${tagSelect
           .map((el) => `&tags=${el}`)
           .join('')}`
       );
@@ -71,7 +73,7 @@ const Discuss = (props) => {
       setLoading(true);
       try {
         const { data } = await API.get(
-          `discuss?page=${query.page}&orderBy=${
+          `discuss?problem=${postData?.id || ''}&page=${query.page}&orderBy=${
             query.orderBy
           }&search=${searchQuery}${tagSelect
             .map((tag) => `&tag=${tag}`)
@@ -122,11 +124,14 @@ const Discuss = (props) => {
       const body = {
         ...value,
         content,
+        problemId: postData?.id || null,
       };
       console.log(body);
       const response = await API.post('discuss', body);
       setLoading(false);
-      props.history.push('/discuss/' + response.data.data.discussId);
+      props.history.push(
+        props.location.pathname + '/' + response.data.data.discussId
+      );
     } catch (err) {
       setLoading(false);
       console.log(err.response);
@@ -155,6 +160,10 @@ const Discuss = (props) => {
     setTagSelect(tagSelect.filter((tag) => tag !== tagContent));
   };
 
+  useEffect(() => {
+    setPosts([]);
+  }, [postData]);
+
   return (
     <div style={{ backgroundColor: 'rgb(245,245,245)' }}>
       <Layout className='min-h-screen relative'>
@@ -177,7 +186,7 @@ const Discuss = (props) => {
                 >
                   <Redirect
                     to={{
-                      pathname: '/problem/asd/',
+                      pathname: '/problem/' + postData.id,
                     }}
                   />
                 </TabPane>
@@ -209,7 +218,7 @@ const Discuss = (props) => {
                 >
                   <Redirect
                     to={{
-                      pathname: '/problem/asd/submission',
+                      pathname: '/problem/' + postData.id + '/submission',
                     }}
                   />
                 </TabPane>
@@ -218,7 +227,7 @@ const Discuss = (props) => {
 
             <div className='text-xl py-2 px-5 text-black border-b border-gray-300'>
               {postData
-                ? `${postData.id}.${postData.name}`
+                ? `${postData.id}. ${postData.title}`
                 : 'All Interview Questions'}
             </div>
             <div className='border-b border-gray-300 flex items-center text-xs bg-gray-100'>
@@ -257,7 +266,7 @@ const Discuss = (props) => {
             </div>
             {!isLoading &&
               posts.map((post, index) => (
-                <Link key={index} to={props.match.path + '/' + post.id}>
+                <Link key={index} to={props.match.url + '/' + post.id}>
                   <PostTile post={post} />
                 </Link>
               ))}

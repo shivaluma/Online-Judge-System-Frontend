@@ -123,10 +123,7 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
       setMode(true);
     } catch (err) {
       console.log(err.response);
-      if (
-        err.response.data.duplicate &&
-        err.response.data.duplicate.hasOwnProperty('username')
-      ) {
+      if (err.response.data.error[0].path === 'username') {
         const newUsername = { ...formInfo.username };
         newUsername.error = true;
         newUsername.errorDesc = 'Username has exist.';
@@ -136,10 +133,7 @@ const Auth = ({ isLoginMode, history, updateUser }) => {
         });
       }
 
-      if (
-        err.response.data.duplicate &&
-        err.response.data.duplicate.hasOwnProperty('email')
-      ) {
+      if (err.response.data.error[0].path === 'email') {
         const newEmail = { ...formInfo.email };
         newEmail.error = true;
         newEmail.errorDesc = 'Email has exist.';

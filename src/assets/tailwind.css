@@ -31,11 +31,11 @@ html {
 }
 
 .CodeMirror-compress {
-  height: calc(100vh - 98px) !important;
+  height: calc(100vh - 146px) !important;
 }
 
 .CodeMirror-expand {
-  height: calc(100vh - 50px) !important;
+  height: calc(100vh - 98px) !important;
 }
 
 .CodeMirror-problem-size {

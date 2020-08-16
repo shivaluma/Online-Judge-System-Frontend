@@ -44,8 +44,8 @@ const ProblemTable = ({ problems, loading }) => {
     {
       title: 'Acceptance',
       dataIndex: 'rate',
-      sorter: (a, b) => a - b,
-      render: (text) => text + '%',
+      sorter: (a, b) => Number(a) - Number(b),
+      render: (text) => Number(text).toFixed(2) + '%',
       sortDirections: ['descend', 'ascend'],
       width: 120,
     },
@@ -79,7 +79,8 @@ const ProblemTable = ({ problems, loading }) => {
       size='small'
       dataSource={problems.map((el, index) => {
         el.key = index;
-        el.rate = el.AcceptCount === 0 ? 0 : el.AcceptCount / el.TotalCount;
+        el.rate =
+          el.AcceptCount === 0 ? 0 : (el.AcceptCount * 100) / el.TotalCount;
         return el;
       })}
     />

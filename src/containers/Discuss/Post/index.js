@@ -27,6 +27,7 @@ var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
 
 const Post = (props) => {
+  console.log(props);
   const [postData, setPostData] = useState(null);
   const [currentVote, setCurrentVote] = useState(null);
   const [comments, setComments] = useState({ count: 0, data: [] });
@@ -37,7 +38,7 @@ const Post = (props) => {
   const [mode, setMode] = useState('0');
   const editorRef = useRef(null);
   const username = useSelector((state) => state.global.userData.username);
-
+  const role = useSelector((state) => state.global.userData.role);
   const [value, setValue] = useState({
     title: '',
     tags: [],
@@ -187,7 +188,6 @@ const Post = (props) => {
   const onDeleteItemHandler = async () => {
     try {
       await API.delete('discuss/' + props.match.params.discussId);
-
       props.history.replace('/discuss');
     } catch (err) {
       Modal.error({
@@ -205,7 +205,7 @@ const Post = (props) => {
             {postData ? (
               <>
                 <div className='flex py-3 border-b border-gray-200'>
-                  <Link to='/discuss'>
+                  <Link to={'/discuss'}>
                     <div className='flex inline-flex items-center text-gray-700 py-1 px-4 border-r border-gray-200'>
                       <svg
                         viewBox='0 0 24 24'
@@ -317,7 +317,7 @@ const Post = (props) => {
                             d='M13.133 14.065C15.941 14.363 20 15.68 20 18v2H4v-2c0-2.321 4.059-3.637 6.867-3.935L10.5 17l1.5 1 1.5-1-.367-2.935zM12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z'
                           ></path>
                         </svg>
-                        Super Admin
+                        <span className='capitalize'>{role}</span>
                       </span>
                       <span className='ml-4'>
                         Last Edit: {dayjs(postData.updatedAt).fromNow()}

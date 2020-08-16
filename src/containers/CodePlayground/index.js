@@ -10,6 +10,7 @@ import {
   FaCompressAlt,
   FaRegCaretSquareUp,
 } from 'react-icons/fa';
+import { Select } from 'antd';
 require('codemirror/lib/codemirror.css');
 require('codemirror/theme/idea.css');
 
@@ -21,13 +22,14 @@ require('codemirror/mode/clike/clike');
 require('codemirror/keymap/sublime');
 
 require('codemirror/addon/edit/closebrackets');
-
+const { Option } = Select;
 export default () => {
   const [code, setCode] = useState('');
   const [running, setIsRunning] = useState(false);
   const [resultArr, setResultArr] = useState([]);
   const [isHeaderCollapse, setHederCollapse] = useState(false);
   const [showStdin, setShowStdin] = useState(false);
+  const [language, changeLanguage] = useState('cpp');
   function utf8_to_b64(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
   }
@@ -42,7 +44,7 @@ export default () => {
       src: utf8_to_b64(code),
       stdin: '',
       expected_result: '',
-      lang: 'cpp',
+      lang: language,
       timeout: 2,
       isBase64: true,
     });
@@ -100,6 +102,26 @@ export default () => {
       {!isHeaderCollapse && <Header noContainer />}
       <div className='flex'>
         <div className='flex flex-col w-2/3'>
+          <div className='w-full px-5 border-b border-gray-300'>
+            <div className='py-2 flex items-center'>
+              <span className='mr-4'>Language </span>
+              <Select
+                defaultValue='cpp'
+                style={{ width: 120 }}
+                onChange={(value) => changeLanguage(value)}
+                className='rounded-lg'
+              >
+                <Option value='cpp'>C++</Option>
+                <Option value='c'>C</Option>
+                <Option value='java' disabled>
+                  Java
+                </Option>
+                <Option value='Python' disabled>
+                  Python
+                </Option>
+              </Select>
+            </div>
+          </div>
           <CodeMirror
             options={{
               theme: 'idea',
