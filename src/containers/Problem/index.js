@@ -8,6 +8,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Redirect, Switch, Route } from 'react-router-dom';
 import SampleCode from '../../utils/sampleCode';
 import API from '../../api';
+import dayjs from 'dayjs';
 require('codemirror/lib/codemirror.css');
 require('codemirror/theme/idea.css');
 
@@ -33,45 +34,29 @@ const Problem = (props) => {
   const [loading, setLoading] = useState(false);
   const [consoleTab, setConsoleTab] = useState('testcase');
   const [submitResponse, setSubmitResponse] = useState(null);
+  const [submissions, setSubmissions] = useState([]);
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Time',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (text) => dayjs(text).format('HH:mm DD/MM/YYYY'),
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
-
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      title: 'Runtime',
+      dataIndex: 'runtime',
+      key: 'runtime',
+      render: (text) => text + 'ms',
     },
     {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      title: 'Language',
+      dataIndex: 'language',
+      key: 'language',
     },
   ];
 
@@ -79,6 +64,15 @@ const Problem = (props) => {
     setCurrentOption(props?.match?.params?.option || 'description');
     setProblem(props?.location?.state?.problem || null);
   }, []);
+
+  useEffect(() => {
+    if (problem) {
+      (async function () {
+        const response = await API.get(`submission?problemId=${problem.id}`);
+        setSubmissions(response.data.submissions);
+      })();
+    }
+  }, [problem]);
 
   const submitCodeHandler = async () => {
     setCurrentOption('submission');
@@ -90,7 +84,9 @@ const Problem = (props) => {
     });
     setLoading(false);
     console.log(response.data);
-    setSubmitResponse(response.data);
+    setSubmitResponse(response.data.result);
+    response.data.submission.key = response.data.submission.updatedAt;
+    setSubmissions([response.data.submission, ...submissions]);
   };
 
   return (
@@ -270,7 +266,14 @@ const Problem = (props) => {
                         </>
                       )}
                   </Skeleton>
-                  <Table size='small' columns={columns} dataSource={data} />
+                  <Table
+                    size='small'
+                    columns={columns}
+                    dataSource={submissions.map((el, index) => {
+                      el.key = el.updatedAt;
+                      return el;
+                    })}
+                  />
                 </div>
               </TabPane>
             </Tabs>
