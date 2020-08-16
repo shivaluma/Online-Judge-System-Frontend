@@ -3,8 +3,8 @@ const cpp = {
 using namespace std; 
 int main() 
 { 
-    // do your job here
-    return 0; 
+  // do your job here
+  return 0; 
 } `,
   codemirror: `text/x-c++src`,
 };
@@ -13,8 +13,8 @@ const c = {
   code: `#include<stdio.h> 
 int main() 
 { 
-    // do your job here
-    return 0; 
+  // do your job here
+  return 0; 
 }`,
   codemirror: `text/x-c++src`,
 };

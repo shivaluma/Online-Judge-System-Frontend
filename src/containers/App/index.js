@@ -136,7 +136,17 @@ function App({ loadUser, currentUser, loading, userLoadingError }) {
             )}
           />
 
-          <Route path='/problem/:problemId' component={Problem} />
+          <Route
+            exact
+            path='/problem/:problemId/discuss'
+            render={(props) => (
+              <Suspense fallback={<Fallback />}>
+                <Discuss {...props} />
+              </Suspense>
+            )}
+          />
+          <Route exact path='/problem/:problemId' component={Problem} />
+          <Route path='/problem/:problemId/:option' component={Problem} />
 
           <Route
             exact

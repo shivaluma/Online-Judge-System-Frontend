@@ -3,86 +3,85 @@ import React from 'react';
 import { Table } from 'antd';
 import { Link } from 'react-router-dom';
 
-const ProblemTable = () => {
+const ProblemTable = ({ problems, loading }) => {
   const columns = [
     {
       title: '#',
-      dataIndex: 'key',
+      dataIndex: 'id',
 
       // specify the condition of filtering result
       // here is that finding the name started with `value`
-
-      sorter: (a, b) => a.key - b.key,
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.id - b.id,
       sortDirections: ['descend', 'ascend'],
+      width: 50,
     },
     {
       title: 'Title',
-      dataIndex: 'name',
+      dataIndex: ['title'],
 
       // specify the condition of filtering result
       // here is that finding the name started with `value`
 
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ['descend', 'ascend'],
-      render: (text) => <Link>{text}</Link>,
+      render: (title, problem) => (
+        <Link
+          to={{
+            pathname: `/problem/${problem.id}`,
+            state: {
+              problem: problem,
+            },
+          }}
+        >
+          {title}
+        </Link>
+      ),
     },
     {
       title: 'Solution',
-      dataIndex: 'age',
-      defaultSortOrder: 'descend',
-      sorter: (a, b) => a.age - b.age,
+      dataIndex: 'hasSolution',
+      width: 120,
     },
     {
       title: 'Acceptance',
-      dataIndex: 'address',
-      sorter: (a, b) => a.address.length - b.address.length,
+      dataIndex: 'rate',
+      sorter: (a, b) => a - b,
+      render: (text) => text + '%',
       sortDirections: ['descend', 'ascend'],
+      width: 120,
     },
     {
       title: 'Difficulty',
-      dataIndex: 'address',
-      sorter: (a, b) => a.address.length - b.address.length,
+      dataIndex: 'difficulty',
+      width: 120,
+      render: (text) => (
+        <span
+          className={`${
+            text === 'easy'
+              ? 'bg-green-600'
+              : test === 'medium'
+              ? 'bg-orange-500'
+              : 'bg-red-600'
+          } px-2 text-white rounded-lg m-1 px-2 pb-1 font-semibold`}
+          style={{ fontSize: '11px' }}
+        >
+          {text}
+        </span>
+      ),
+      sorter: (a, b) => a.length - b.length,
       sortDirections: ['descend', 'ascend'],
     },
   ];
-
-  const data = [
-    {
-      key: '1',
-      name: 'Kids With the Greatest Number of Candies',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-  ];
-
-  function onChange(pagination, filters, sorter, extra) {
-    console.log('params', pagination, filters, sorter, extra);
-  }
 
   return (
     <Table
       columns={columns}
+      loading={loading}
       size='small'
-      dataSource={data}
-      onChange={onChange}
+      dataSource={problems.map((el, index) => {
+        el.key = index;
+        el.rate = el.AcceptCount === 0 ? 0 : el.AcceptCount / el.TotalCount;
+        return el;
+      })}
     />
   );
 };

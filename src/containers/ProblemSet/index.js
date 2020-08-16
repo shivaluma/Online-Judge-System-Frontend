@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaThLarge, FaFileCode } from 'react-icons/fa';
 import { AiOutlineFileText } from 'react-icons/ai';
 import Header from '../../components/UI/Header';
@@ -9,8 +9,24 @@ import AlgorithmImage from '../../assets/images/algorithm.png';
 import DatabaseImage from '../../assets/images/database.png';
 import ShellImage from '../../assets/images/shell.png';
 import ProblemTable from './Table';
+import API from '../../api';
 const ProblemSet = () => {
   const { Option } = Select;
+  const [problemList, setProblemList] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
+  const [difficulty, setDifficulty] = useState('');
+  const [hasSolution, setHasSolution] = useState('');
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    (async function () {
+      const response = await API.get(
+        `/problem?page=${pageNum}&difficulty=${difficulty}&hasSolution=${hasSolution}`
+      );
+      setProblemList(response.data.problems);
+      setLoading(false);
+    })();
+  }, [pageNum, difficulty, hasSolution, setLoading]);
   return (
     <>
       <Header />
@@ -100,7 +116,7 @@ const ProblemSet = () => {
               className='rounded-full'
               defaultValue='Difficulty'
               style={{ width: 120 }}
-              onChange={(value) => console.log(value)}
+              onChange={(value) => setDifficulty(value.toLowerCase())}
             >
               <Option value='easy'>Easy</Option>
               <Option value='medium'>Medium</Option>
@@ -110,7 +126,7 @@ const ProblemSet = () => {
               className='rounded-full ml-3'
               defaultValue='Tags'
               style={{ width: 120 }}
-              onChange={(value) => console.log(value)}
+              onChange={(value) => {}}
             >
               <Option value='easy'>Array</Option>
               <Option value='medium'>Hash Table</Option>
@@ -119,7 +135,7 @@ const ProblemSet = () => {
           </div>
         </div>
         <div className='mt-5 border-t border-gray-200 py-5'>
-          <ProblemTable />
+          <ProblemTable problems={problemList} loading={loading} />
         </div>
       </div>
       <Footer />

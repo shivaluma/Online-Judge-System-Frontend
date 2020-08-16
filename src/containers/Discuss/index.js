@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Layout from '../../hocs/Layout';
-import { Menu, Button, Pagination, Empty, Spin } from 'antd';
+import { Menu, Button, Pagination, Empty, Spin, Tabs } from 'antd';
 import Editor from '../../components/Forum/Editor';
 import PostTile from '../../components/Forum/PostTile';
 import { withRouter, Link } from 'react-router-dom';
@@ -11,6 +12,9 @@ import { useSelector } from 'react-redux';
 import AuthModal from '../Auth/AuthModal';
 import Search from 'antd/lib/input/Search';
 import TagWithCount from '../../components/UI/Tag/TagWithCount';
+import { MdDescription } from 'react-icons/md';
+import { Redirect } from 'react-router-dom';
+const { TabPane } = Tabs;
 const Discuss = (props) => {
   const [mode, setMode] = useState('0');
   const [value, setValue] = useState({
@@ -83,12 +87,14 @@ const Discuss = (props) => {
       setLoading(false);
     })();
     props.history.replace({
-      pathname: '/discuss',
+      pathname: props.location.pathname,
       search: `?page=${query.page}&orderBy=${
         query.orderBy
       }&search=${searchQuery}${tagSelect.map((tag) => `&tag=${tag}`).join('')}`,
+      state: { ...props.location.state },
     });
   }, [
+    props.location.pathname,
     props.location.search,
     props.history,
     query.page,
@@ -127,6 +133,7 @@ const Discuss = (props) => {
     }
   }, [value, props.history]);
 
+  const postData = props?.location?.state?.postData;
   const openEditor = useCallback(() => {
     if (!isLogin) {
       setShowModal(true);
@@ -153,8 +160,66 @@ const Discuss = (props) => {
       <Layout className='min-h-screen relative'>
         <div className='container mt-8 flex'>
           <div className='w-10/12 bg-white rounded-md border border-gray-300'>
+            {postData && (
+              <Tabs
+                defaultActiveKey='3'
+                type='card'
+                size={'small'}
+                tabBarGutter={0}
+              >
+                <TabPane
+                  tab={
+                    <div className='flex items-center w-32 justify-center text-sm'>
+                      <MdDescription className='mr-2' /> Description{' '}
+                    </div>
+                  }
+                  key='1'
+                >
+                  <Redirect
+                    to={{
+                      pathname: '/problem/asd/',
+                    }}
+                  />
+                </TabPane>
+                <TabPane
+                  disabled
+                  tab={
+                    <div className='flex items-center w-32 justify-center text-sm'>
+                      <MdDescription className='mr-2' /> Solution{' '}
+                    </div>
+                  }
+                  key='2'
+                ></TabPane>
+                <TabPane
+                  key='3'
+                  tab={
+                    <div className='flex items-center w-32 justify-center text-sm'>
+                      <MdDescription className='mr-2' /> Discuss{' '}
+                    </div>
+                  }
+                  disabled
+                ></TabPane>
+                <TabPane
+                  tab={
+                    <div className='flex items-center w-32 justify-center text-sm'>
+                      <MdDescription className='mr-2' /> Submissions{' '}
+                    </div>
+                  }
+                  key='4'
+                >
+                  <Redirect
+                    to={{
+                      pathname: '/problem/asd/submission',
+                    }}
+                  />
+                </TabPane>
+              </Tabs>
+            )}
+
             <div className='text-xl py-2 px-5 text-black border-b border-gray-300'>
-              All Interview Questions
+              {postData
+                ? `${postData.id}.${postData.name}`
+                : 'All Interview Questions'}
             </div>
             <div className='border-b border-gray-300 flex items-center text-xs bg-gray-100'>
               <Menu
