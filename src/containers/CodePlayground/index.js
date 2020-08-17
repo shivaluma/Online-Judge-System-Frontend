@@ -30,6 +30,7 @@ export default () => {
   const [isHeaderCollapse, setHederCollapse] = useState(false);
   const [showStdin, setShowStdin] = useState(false);
   const [language, changeLanguage] = useState('cpp');
+  const [stdin, setStdin] = useState('');
   function utf8_to_b64(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
   }
@@ -40,9 +41,9 @@ export default () => {
     if (running) return;
     setIsRunning(true);
 
-    const response = await axios.post('http://localhost/submit', {
+    const response = await axios.post('http://35.220.245.247/submit', {
       src: utf8_to_b64(code),
-      stdin: '',
+      stdin: stdin,
       expected_result: '',
       lang: language,
       timeout: 2,
@@ -206,6 +207,8 @@ export default () => {
             <textarea
               ref={stdinRef}
               className='w-full h-48 outline-none'
+              onChange={(event) => setStdin(event.target.value)}
+              value={stdin}
             ></textarea>
           )}
         </div>
