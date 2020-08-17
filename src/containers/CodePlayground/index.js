@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Header from '../../components/UI/Header';
 
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import axios from 'axios';
+import API from '../../api';
 import dayjs from 'dayjs';
 import {
   FaPlayCircle,
@@ -36,34 +36,20 @@ export default () => {
   }
 
   const stdinRef = useRef(null);
-  let getResultInterval = null;
+
   const sendCode = async () => {
     if (running) return;
     setIsRunning(true);
 
-    const response = await axios.post('http://35.220.245.247/submit', {
-      src: utf8_to_b64(code),
+    const result = await API.post('playground/run', {
+      src: code,
       stdin: stdin,
-      expected_result: '',
       lang: language,
-      timeout: 2,
-      isBase64: true,
     });
-    const getResult = async () => {
-      const result = await axios.get(response.data);
-      if (
-        result.data.status !== 'Queued' &&
-        result.data.status !== 'Processing'
-      ) {
-        clearInterval(getResultInterval);
-
-        result.data.time = dayjs().format('h:mm:ss A');
-        if (!result.data.isError) result.data.status = 'Success';
-        setResultArr([result.data, ...resultArr]);
-        setIsRunning(false);
-      }
-    };
-    getResultInterval = setInterval(getResult, 500);
+    result.data.time = dayjs().format('h:mm:ss A');
+    if (!result.data.isError) result.data.status = 'Success';
+    setResultArr([result.data, ...resultArr]);
+    setIsRunning(false);
   };
 
   const headerCollapseHandler = () => {
