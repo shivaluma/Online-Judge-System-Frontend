@@ -143,8 +143,16 @@ const Problem = (props) => {
                       )}
                     </h3>
                     <div className='flex items-center pb-4 mt-3 border-b border-gray-200'>
-                      <span className='text-xs font-semibold text-green-500'>
-                        {problem && problem.difficulty}
+                      <span
+                        className={`text-xs font-semibold ${
+                          problem.difficulty === 'easy'
+                            ? 'text-green-500'
+                            : problem.difficulty === 'medium'
+                            ? 'text-orange-500'
+                            : 'text-red-500'
+                        }`}
+                      >
+                        {problem.difficulty}
                       </span>
                       <div className='flex items-center ml-6 text-xs'>
                         <AiOutlineLike className='text-sm' />{' '}

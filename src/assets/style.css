@@ -1738,6 +1738,12 @@ video {
   color: rgba(157, 157, 157, var(--text-opacity));
 }
 
+.text-red-500 {
+  --text-opacity: 1;
+  color: #f56565;
+  color: rgba(245, 101, 101, var(--text-opacity));
+}
+
 .text-red-600 {
   --text-opacity: 1;
   color: #e53e3e;
@@ -1754,6 +1760,12 @@ video {
   --text-opacity: 1;
   color: #9b2c2c;
   color: rgba(155, 44, 44, var(--text-opacity));
+}
+
+.text-orange-500 {
+  --text-opacity: 1;
+  color: #ed8936;
+  color: rgba(237, 137, 54, var(--text-opacity));
 }
 
 .text-orange-600 {

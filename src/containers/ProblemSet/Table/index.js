@@ -58,7 +58,7 @@ const ProblemTable = ({ problems, loading }) => {
           className={`${
             text === 'easy'
               ? 'bg-green-600'
-              : test === 'medium'
+              : text === 'medium'
               ? 'bg-orange-500'
               : 'bg-red-600'
           } px-2 text-white rounded-lg m-1 px-2 pb-1 font-semibold`}
