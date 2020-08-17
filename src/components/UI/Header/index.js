@@ -51,26 +51,26 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
           </span>
         </Link>
 
-        <nav className='list-none flex text-sm text-gray-1000 ml-8'>
-          <li className='hover:text-gray-200 cursor-pointer'>Explore</li>
+        <nav className='flex ml-8 text-sm list-none text-gray-1000'>
+          <li className='cursor-pointer hover:text-gray-200'>Explore</li>
           <Link to='/problemset'>
-            <li className='ml-6 hover:text-gray-200 cursor-pointer'>
+            <li className='ml-6 cursor-pointer hover:text-gray-200'>
               Problems
             </li>
           </Link>
-          <li className='ml-6 hover:text-gray-200 cursor-pointer'>Mock</li>
-          <li className='ml-6 hover:text-gray-200 cursor-pointer'>Contest</li>
+          <li className='ml-6 cursor-pointer hover:text-gray-200'>Mock</li>
+          <li className='ml-6 cursor-pointer hover:text-gray-200'>Contest</li>
           <Link to='/playground'>
-            <li className='ml-6 hover:text-orange-500 cursor-pointer'>
+            <li className='ml-6 cursor-pointer hover:text-orange-500'>
               Playground
             </li>
           </Link>
           <Link to='/discuss'>
-            <li className='ml-6 hover:text-gray-200 cursor-pointer'>Discuss</li>
+            <li className='ml-6 cursor-pointer hover:text-gray-200'>Discuss</li>
           </Link>
         </nav>
 
-        <div className='ml-auto px-6 border-l border-gray-600 text-gray-200 text-sm'>
+        <div className='px-6 ml-auto text-sm text-gray-200 border-l border-gray-600'>
           {!isLogin ? (
             <>
               <Link to='/accounts/signup'>
@@ -84,12 +84,12 @@ const Header = ({ isLogin, user, removeUser, noContainer }) => {
           ) : (
             <div className='relative'>
               <div
-                className='h-full flex items-center opacity-75 hover:opacity-100 duration-300 outline-none'
+                className='flex items-center h-full outline-none opacity-75 hover:opacity-100 duration-300'
                 onClick={ToggleUserBoard}
                 tabIndex={-1}
               >
                 <Avatar size={6} />
-                <FaCaretDown className='text-xs ml-1' />
+                <FaCaretDown className='ml-1 text-xs' />
               </div>
               <div ref={ref}>
                 {isComponentVisible && (

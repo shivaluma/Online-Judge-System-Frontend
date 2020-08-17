@@ -191,14 +191,14 @@ const Post = (props) => {
 
   return (
     <div style={{ backgroundColor: 'rgb(245,245,245)' }}>
-      <Layout className='min-h-screen relative'>
+      <Layout className='relative min-h-screen'>
         <div className='container mt-6 '>
-          <div className='bg-white rounded-sm shadow-md pb-6 mb-8'>
+          <div className='pb-6 mb-8 bg-white rounded-sm shadow-md'>
             {postData ? (
               <>
                 <div className='flex py-3 border-b border-gray-200'>
                   <Link to={'/discuss'}>
-                    <div className='flex inline-flex items-center text-gray-700 py-1 px-4 border-r border-gray-200'>
+                    <div className='flex inline-flex items-center px-4 py-1 text-gray-700 border-r border-gray-200'>
                       <svg
                         viewBox='0 0 24 24'
                         width='1em'
@@ -214,9 +214,9 @@ const Post = (props) => {
                     </div>
                   </Link>
                   <div className='flex justify-between flex-grow'>
-                    <div className='text-lg flex items-center ml-3'>
+                    <div className='flex items-center ml-3 text-lg'>
                       <Tooltip placement='top' title={'Pinned'}>
-                        <TiPin className='text-2xl mr-2' />
+                        <TiPin className='mr-2 text-2xl' />
                       </Tooltip>
 
                       <h3 className='text-md'>{postData.title}</h3>
@@ -228,7 +228,7 @@ const Post = (props) => {
                           viewBox='0 0 24 24'
                           width='1.2em'
                           height='1.2em'
-                          className='fill-current mr-5'
+                          className='mr-5 fill-current'
                           onClick={() => {
                             setEditMode(true);
                             setMode('1/2');
@@ -264,7 +264,7 @@ const Post = (props) => {
                 </div>
                 <div className='flex'>
                   <div
-                    className='flex flex-col items-center py-2 px-5'
+                    className='flex flex-col items-center px-5 py-2'
                     style={{ width: '82.77px' }}
                   >
                     <button
@@ -277,7 +277,7 @@ const Post = (props) => {
                     >
                       <FaCaretUp />
                     </button>
-                    <span className='text-sm text-gray-600 py-2'>
+                    <span className='py-2 text-sm text-gray-600'>
                       {postData.upVote - postData.downVote}
                     </span>
                     <button
@@ -293,15 +293,15 @@ const Post = (props) => {
                   </div>
 
                   <div className='flex-grow'>
-                    <div className='my-2 flex text-gray-500 items-center text-xs'>
+                    <div className='flex items-center my-2 text-xs text-gray-500'>
                       <Avatar size={32} src={postData.authorAvatar} />
                       <span className='ml-2'>{postData.authorUsername}</span>
-                      <span className='ml-4 flex items-center'>
+                      <span className='flex items-center ml-4'>
                         <svg
                           viewBox='0 0 24 24'
                           width='1em'
                           height='1em'
-                          className='fill-current text-md mr-1'
+                          className='mr-1 fill-current text-md'
                         >
                           <path
                             fillRule='evenodd'
@@ -315,7 +315,7 @@ const Post = (props) => {
                       </span>
                       <span className='ml-4'>{postData.View.view} Views</span>
                     </div>
-                    <div className='mt-2 markdown-body p-3'>
+                    <div className='p-3 mt-2 markdown-body'>
                       {/* prettier-ignore */}
                       <ReactMarkdown source={postData.content} />
                     </div>
@@ -327,7 +327,7 @@ const Post = (props) => {
                   </div>
                 </div>
                 <div
-                  className='flex pl-5 mt-8 justify-between w-full'
+                  className='flex justify-between w-full pl-5 mt-8'
                   style={{
                     backgroundColor: '#fafafa',
                   }}
@@ -339,13 +339,13 @@ const Post = (props) => {
                     }}
                   >
                     <FaComment />{' '}
-                    <span className='text-xs ml-2'>
+                    <span className='ml-2 text-xs'>
                       Comments : {comments.count}
                     </span>
                   </span>
 
                   <Menu
-                    className='text-xs bg-gray-100 flex items-center border-0'
+                    className='flex items-center text-xs bg-gray-100 border-0'
                     theme='light'
                     mode='horizontal'
                     onClick={handleChangeSortType}
@@ -377,7 +377,7 @@ const Post = (props) => {
                   })}
                 </div>
 
-                <div className='w-full py-3 px-8'>
+                <div className='w-full px-8 py-3'>
                   <Pagination
                     defaultCurrent={currentPage}
                     total={comments.count}
@@ -386,7 +386,7 @@ const Post = (props) => {
                 </div>
               </>
             ) : (
-              <div className='h-64 flex items-center justify-center'>
+              <div className='flex items-center justify-center h-64'>
                 <Spin size='large' />
               </div>
             )}

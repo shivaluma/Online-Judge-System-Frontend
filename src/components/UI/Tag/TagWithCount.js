@@ -8,7 +8,7 @@ const TagWithCount = ({ text, count, isSelected, onClick, onRemove }) => {
       } border-gray-400 py-1 rounded-md text-sm mr-2 mt-3`}
       onClick={() => onClick(text)}
     >
-      <span className='h-full border-r border-gray-400 px-2'>{text}</span>
+      <span className='h-full px-2 border-r border-gray-400'>{text}</span>
       <span
         className='h-full px-2 text-xs font-light cursor-pointer'
         onClick={() => {

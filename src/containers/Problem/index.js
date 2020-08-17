@@ -101,12 +101,12 @@ const Problem = (props) => {
 
   return (
     problem && (
-      <div className='h-screen max-h-screen flex flex-col'>
+      <div className='flex flex-col h-screen max-h-screen'>
         <HeaderWhite />
 
         <div className='flex flex-1 w-full'>
-          <div className='w-full flex h-full'>
-            <div className='w-1/2 flex flex-col justify-start items-stretch flex-stretch'>
+          <div className='flex w-full h-full'>
+            <div className='flex flex-col items-stretch justify-start w-1/2 flex-stretch'>
               <Tabs
                 activeKey={`${currentOption}`}
                 type='card'
@@ -116,7 +116,7 @@ const Problem = (props) => {
               >
                 <TabPane
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Description{' '}
                     </div>
                   }
@@ -142,8 +142,8 @@ const Problem = (props) => {
                         />
                       )}
                     </h3>
-                    <div className='flex items-center mt-3 pb-4 border-b border-gray-200'>
-                      <span className='text-green-500 text-xs font-semibold'>
+                    <div className='flex items-center pb-4 mt-3 border-b border-gray-200'>
+                      <span className='text-xs font-semibold text-green-500'>
                         {problem && problem.difficulty}
                       </span>
                       <div className='flex items-center ml-6 text-xs'>
@@ -158,7 +158,7 @@ const Problem = (props) => {
 
                     <div className='w-full mt-4'>
                       <Skeleton active loading={problem === null}>
-                        <div className='mt-2 markdown-body p-1'>
+                        <div className='p-1 mt-2 markdown-body'>
                           {/* prettier-ignore */}
                           <ReactMarkdown source={problem ? problem.description : ""} />
                         </div>
@@ -169,7 +169,7 @@ const Problem = (props) => {
                 <TabPane
                   disabled
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Solution{' '}
                     </div>
                   }
@@ -179,7 +179,7 @@ const Problem = (props) => {
                 </TabPane>
                 <TabPane
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Discuss{' '}
                     </div>
                   }
@@ -196,7 +196,7 @@ const Problem = (props) => {
                 </TabPane>
                 <TabPane
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Submissions{' '}
                     </div>
                   }
@@ -219,7 +219,7 @@ const Problem = (props) => {
                       {submitResponse && submitResponse.status === 'Accepted' && (
                         <>
                           <br />
-                          <span className='text-gray-700 text-md mt-2'>
+                          <span className='mt-2 text-gray-700 text-md'>
                             Runtime:{' '}
                             {Number(submitResponse.time_used[0]).toFixed(1) +
                               'ms'}
@@ -231,33 +231,33 @@ const Problem = (props) => {
                         submitResponse.status === 'Wrong Answer' && (
                           <>
                             <br />
-                            <div className='flex w-full flex-col'>
+                            <div className='flex flex-col w-full'>
                               <div className='w-full py-2'>
-                                <span className='text-sm text-gray-700 mr-3'>
+                                <span className='mr-3 text-sm text-gray-700'>
                                   Input{' '}
                                 </span>
                                 <input
-                                  className='px-3 py-2 border border-gray-400 rounded-md w-full'
+                                  className='w-full px-3 py-2 border border-gray-400 rounded-md'
                                   value={submitResponse.input}
                                   disabled
                                 />
                               </div>
                               <div className='w-full py-2'>
-                                <span className='text-sm text-gray-700 mr-3'>
+                                <span className='mr-3 text-sm text-gray-700'>
                                   Your output{' '}
                                 </span>
                                 <input
-                                  className='px-3 py-2 border border-gray-400 rounded-md w-full'
+                                  className='w-full px-3 py-2 border border-gray-400 rounded-md'
                                   value={submitResponse.output}
                                   disabled
                                 />
                               </div>
                               <div className='w-full py-2 mb-8'>
-                                <span className='text-sm text-gray-700 mr-3'>
+                                <span className='mr-3 text-sm text-gray-700'>
                                   Expected output{' '}
                                 </span>
                                 <input
-                                  className='px-3 py-2 border border-gray-400 rounded-md w-full'
+                                  className='w-full px-3 py-2 border border-gray-400 rounded-md'
                                   value={submitResponse.expected_answer}
                                   disabled
                                 />
@@ -271,7 +271,7 @@ const Problem = (props) => {
                         submitResponse.status !== 'Wrong Answer' && (
                           <>
                             <br />
-                            <div className='text-red-800 bg-red-200 px-3 py-4 text-md mt-2 w-full mb-5'>
+                            <div className='w-full px-3 py-4 mt-2 mb-5 text-red-800 bg-red-200 text-md'>
                               {submitResponse.stderr}
                             </div>
                           </>
@@ -290,9 +290,9 @@ const Problem = (props) => {
               </Tabs>
             </div>
 
-            <div className='w-1/2 h-full max-h-full flex flex-col overflow-hidden'>
+            <div className='flex flex-col w-1/2 h-full max-h-full overflow-hidden'>
               <div
-                className='border border-t border-b flex items-center'
+                className='flex items-center border border-t border-b'
                 style={{ height: '36px' }}
               >
                 <Select
@@ -339,7 +339,7 @@ const Problem = (props) => {
                 />
               </div>
 
-              <div className='w-full border-t border-gray-200 flex-shrink-0'>
+              <div className='flex-shrink-0 w-full border-t border-gray-200'>
                 <Tabs
                   onChange={() => {}}
                   type='card'
@@ -370,17 +370,17 @@ const Problem = (props) => {
                 </Tabs>
               </div>
 
-              <div className='h-12 w-full px-3 flex items-center py-3 border-t border-gray-200'>
+              <div className='flex items-center w-full h-12 px-3 py-3 border-t border-gray-200'>
                 <span className='flex items-center text-xs'>
                   Console <FaCaretUp className='ml-1' />
                 </span>
                 <div className='flex ml-auto'>
-                  <button className='px-4 py-2 border border-gray-400 rounded-md focus:outline-none flex items-center'>
+                  <button className='flex items-center px-4 py-2 border border-gray-400 rounded-md focus:outline-none'>
                     <FaPlayCircle className='mr-2' />
                     Run code
                   </button>
                   <button
-                    className='ml-4 px-5 py-2 border border-gray-400 rounded-md focus:outline-none flex items-center text-white'
+                    className='flex items-center px-5 py-2 ml-4 text-white border border-gray-400 rounded-md focus:outline-none'
                     style={{ backgroundColor: 'rgb(69, 90, 100)' }}
                     onClick={submitCodeHandler}
                   >

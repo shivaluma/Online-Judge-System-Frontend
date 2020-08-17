@@ -42,7 +42,7 @@ const Editor = ({
       }}
     >
       <div
-        className='border border-gray-200 px-8 py-2 rounded-t-md border-gray-200 bg-white absolute z-30 top-0 -translate-y-full transform outline-none'
+        className='absolute top-0 z-30 px-8 py-2 bg-white border border-gray-200 outline-none rounded-t-md -translate-y-full transform'
         style={{
           right: '2%',
         }}
@@ -70,10 +70,10 @@ const Editor = ({
         </svg>
       </div>
       <div className='w-full h-full overflow-hidden'>
-        <div className='w-full flex py-3 justify-between items-center'>
+        <div className='flex items-center justify-between w-full py-3'>
           <div className='flex items-center'>
             <input
-              className='rounded-md border border-gray-400 px-4 py-2 outline-none text-sm mr-4'
+              className='px-4 py-2 mr-4 text-sm border border-gray-400 outline-none rounded-md'
               placeholder='Enter topic title...'
               value={value.title}
               onChange={handleTitleChange}
@@ -111,7 +111,7 @@ const Editor = ({
                 viewBox='0 0 24 24'
                 width='1em'
                 height='1em'
-                className='fill-current ml-1'
+                className='ml-1 fill-current'
               >
                 <path
                   fillRule='evenodd'

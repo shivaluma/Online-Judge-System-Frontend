@@ -10,12 +10,12 @@ const PostTile = ({ post }) => {
 
   return (
     post && (
-      <div className='flex px-5 py-4 items-center border-b border-gray-200'>
+      <div className='flex items-center px-5 py-4 border-b border-gray-200'>
         <Avatar size={48} src={post?.authorAvatar} />
-        <div className='flex flex-col ml-3 mb-1'>
-          <div className='text-lg flex items-center'>
+        <div className='flex flex-col mb-1 ml-3'>
+          <div className='flex items-center text-lg'>
             <Tooltip placement='top' title={'Pinned'}>
-              <TiPin className='text-2xl mr-2' />
+              <TiPin className='mr-2 text-2xl' />
             </Tooltip>
 
             <h3 className='text-base' style={{ color: '#212121' }}>
@@ -29,25 +29,25 @@ const PostTile = ({ post }) => {
             </div>
           </div>
 
-          <span className='text-xs text-gray-500 mt-1'>
+          <span className='mt-1 text-xs text-gray-500'>
             {post.authorUsername} created at: {dayjs(post.createdAt).fromNow()}{' '}
             | Last Update: {dayjs(post.updatedAt).fromNow()}
           </span>
         </div>
-        <div className='ml-auto flex'>
-          <div className='flex items-center font-thin mr-12'>
+        <div className='flex ml-auto'>
+          <div className='flex items-center mr-12 font-thin'>
             {voteValue >= 0 ? (
               <FaCaretUp className='text-xl text-gray-400' />
             ) : (
               <FaCaretDown className='text-xl text-gray-400' />
             )}
-            <span className='text-sm ml-1 text-gray-700'>
+            <span className='ml-1 text-sm text-gray-700'>
               {voteValue >= 0 ? voteValue : -voteValue}
             </span>
           </div>
-          <div className='flex items-center text-gray-600 font-thin'>
+          <div className='flex items-center font-thin text-gray-600'>
             <FaRegEye className='text-xl text-gray-400' />
-            <span className='text-sm ml-1 text-gray-700'>{post.View.view}</span>
+            <span className='ml-1 text-sm text-gray-700'>{post.View.view}</span>
           </div>
         </div>
       </div>

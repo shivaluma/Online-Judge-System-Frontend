@@ -79,15 +79,15 @@ export default () => {
     if (result.stderr !== '') {
       return (
         <div key={index} className='flex flex-col px-2 mb-3'>
-          <span className='text-blue-500 text-xs'>{result.time}</span>
-          <div className='text-red-600 text-sm'>{result.stderr}</div>
+          <span className='text-xs text-blue-500'>{result.time}</span>
+          <div className='text-sm text-red-600'>{result.stderr}</div>
         </div>
       );
     }
     return (
       <div key={index} className='flex flex-col px-2 mb-3'>
-        <span className='text-blue-500 text-xs'>{result.time}</span>
-        <div className='text-green-600 text-sm whitespace-pre'>
+        <span className='text-xs text-blue-500'>{result.time}</span>
+        <div className='text-sm text-green-600 whitespace-pre'>
           {`${result.output}`} ‣
           <span className='text-gray-700'>
             {Number.parseFloat(result.time_used[0]).toFixed(2)}ms
@@ -103,7 +103,7 @@ export default () => {
       <div className='flex'>
         <div className='flex flex-col w-2/3'>
           <div className='w-full px-5 border-b border-gray-300'>
-            <div className='py-2 flex items-center'>
+            <div className='flex items-center py-2'>
               <span className='mr-4'>Language </span>
               <Select
                 defaultValue='cpp'
@@ -140,11 +140,11 @@ export default () => {
             }`}
           />
           <div
-            className='w-full flex items-center p-1 border-t border-gray-400'
+            className='flex items-center w-full p-1 border-t border-gray-400'
             style={{ height: '50px' }}
           >
             <div
-              className='flex items-center text-sm text-white bg-green-500 rounded-full px-4 py-2 outline-none focus:outline-none cursor-pointer'
+              className='flex items-center px-4 py-2 text-sm text-white bg-green-500 rounded-full outline-none cursor-pointer focus:outline-none'
               onClick={sendCode}
               tabIndex={-1}
             >
@@ -153,21 +153,21 @@ export default () => {
           </div>
         </div>
 
-        <div className='flex flex-col w-1/3 border-l border-gray-400 bg-gray-200'>
-          <div className='flex items-center justify-between h-16 bg-gray-300 px-3 shadow-md'>
+        <div className='flex flex-col w-1/3 bg-gray-200 border-l border-gray-400'>
+          <div className='flex items-center justify-between h-16 px-3 bg-gray-300 shadow-md'>
             <div className='font-semibold text-gray-800'>
               Output:{' '}
               {running ? (
-                <span className='px-2 py-1 bg-blue-500 text-white font-semibold text-sm rounded-full'>
+                <span className='px-2 py-1 text-sm font-semibold text-white bg-blue-500 rounded-full'>
                   Running
                 </span>
               ) : resultArr.length > 0 ? (
                 resultArr[0].isError ? (
-                  <span className='px-2 py-1 bg-red-500 text-white font-semibold text-sm rounded-full'>
+                  <span className='px-2 py-1 text-sm font-semibold text-white bg-red-500 rounded-full'>
                     {resultArr[0].status}
                   </span>
                 ) : (
-                  <span className='px-2 py-1 bg-green-500 text-white font-semibold text-sm rounded-full'>
+                  <span className='px-2 py-1 text-sm font-semibold text-white bg-green-500 rounded-full'>
                     {resultArr[0].status}
                   </span>
                 )
@@ -176,7 +176,7 @@ export default () => {
               )}
             </div>
             <button
-              className='p-2 rounded-lg border border-gray-500 text-gray-700 focus:outline-none'
+              className='p-2 text-gray-700 border border-gray-500 rounded-lg focus:outline-none'
               onClick={headerCollapseHandler}
             >
               {!isHeaderCollapse ? <FaExpandAlt /> : <FaCompressAlt />}
@@ -184,7 +184,7 @@ export default () => {
           </div>
 
           <div
-            className='flex flex-grow bg-gray-100 relative flex-col overflow-y-auto py-3'
+            className='relative flex flex-col flex-grow py-3 overflow-y-auto bg-gray-100'
             style={{
               maxHeight: `calc(100vh ${!isHeaderCollapse ? '- 64px' : ''} ${
                 showStdin ? '- 192px' : ''
@@ -193,7 +193,7 @@ export default () => {
           >
             {resultList}
             <div
-              className='absolute bg-white rounded-t-sm px-1 border border-gray-400 flex items-center focus:outline-none self-end'
+              className='absolute flex items-center self-end px-1 bg-white border border-gray-400 rounded-t-sm focus:outline-none'
               style={{ fontSize: '11px', bottom: '0', left: '0' }}
               tabIndex={-1}
               onClick={() => setShowStdin(!showStdin)}

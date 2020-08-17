@@ -9,9 +9,9 @@ export default () => {
       <Header />
       <div className='container flex my-8' style={{ maxWidth: '1000px' }}>
         <div className='w-2/3 mr-10 border-r border-gray-200'>
-          <div className='py-3 flex items-center text-2xl'>
+          <div className='flex items-center py-3 text-2xl'>
             <FaChartLine />{' '}
-            <span className='text-gray-700 pl-3 font-thin'>Trending Posts</span>
+            <span className='pl-3 font-thin text-gray-700'>Trending Posts</span>
           </div>
 
           <TrendingPost />
@@ -19,34 +19,34 @@ export default () => {
           <TrendingPost />
           <TrendingPost />
         </div>
-        <div className='px-1 mt-8 flex flex-col'>
+        <div className='flex flex-col px-1 mt-8'>
           <div
-            className='h-40 w-full rounded-lg p-3 flex flex-col'
+            className='flex flex-col w-full h-40 p-3 rounded-lg'
             style={{
               background:
                 'linear-gradient(-150deg,#424141 15%,#4e5056 70%,#505b6b 94%)',
             }}
           >
-            <h3 className='text-gray-200 text-lg pt-3'>Want to contribute?</h3>
+            <h3 className='pt-3 text-lg text-gray-200'>Want to contribute?</h3>
 
             <span className='mt-2 text-sm text-gray-400'>
               Help the community, earn up to 10000 BrosCoin
             </span>
 
-            <button className='mt-2 self-end w-24 flex-wrap text-gray-100 p-2 border-gray-100 border rounded-md text-sm'>
+            <button className='flex-wrap self-end w-24 p-2 mt-2 text-sm text-gray-100 border border-gray-100 rounded-md'>
               Contribute
             </button>
           </div>
 
-          <div className='h-40 w-full rounded-lg p-3 flex mt-12 border border-gray-300'>
+          <div className='flex w-full h-40 p-3 mt-12 border border-gray-300 rounded-lg'>
             <div className='flex flex-col'>
-              <h3 className='text-gray-800 text-lg pt-3'>BrosCode Contest</h3>
+              <h3 className='pt-3 text-lg text-gray-800'>BrosCode Contest</h3>
 
               <span className='mt-2 text-sm text-gray-600'>
                 Participate and win your prizes.
               </span>
 
-              <button className='mt-8 flex-wrap p-1 border border-gray-800 border rounded-md text-sm'>
+              <button className='flex-wrap p-1 mt-8 text-sm border border-gray-800 rounded-md'>
                 Join Contest
               </button>
             </div>
@@ -56,19 +56,19 @@ export default () => {
             </div>
           </div>
 
-          <div className='h-40 w-full rounded-lg p-3 flex mt-12 border border-gray-300'>
+          <div className='flex w-full h-40 p-3 mt-12 border border-gray-300 rounded-lg'>
             <div className='flex items-center mx-auto'>
               <FaComments className='text-4xl text-blue-600' />
             </div>
 
             <div className='flex flex-col'>
-              <h3 className='text-gray-800 text-lg pt-3'>Discuss Now</h3>
+              <h3 className='pt-3 text-lg text-gray-800'>Discuss Now</h3>
 
               <span className='mt-2 text-sm text-gray-600'>
                 Share interview experiences.
               </span>
 
-              <button className='mt-8 flex-wrap p-1 border border-gray-800 border rounded-md text-sm'>
+              <button className='flex-wrap p-1 mt-8 text-sm border border-gray-800 rounded-md'>
                 Let's Discuss
               </button>
             </div>

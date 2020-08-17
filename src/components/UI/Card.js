@@ -14,14 +14,14 @@ export default ({ left, zIndex, scale, className, backgroundImage }) => (
     }}
   >
     <div
-      className='absolute border border-gray-200 shadow-lg bg-white rounded-full h-20 w-20 text-center'
+      className='absolute w-20 h-20 text-center bg-white border border-gray-200 rounded-full shadow-lg'
       style={{
         top: '170px',
         right: '10px',
       }}
     >
       <FaPlay
-        className='text-2xl text-gray-400 absolute'
+        className='absolute text-2xl text-gray-400'
         style={{
           top: '50%',
           left: '50%',
@@ -37,13 +37,13 @@ export default ({ left, zIndex, scale, className, backgroundImage }) => (
       }}
     >
       <div className='p-6'>
-        <div className='inline-block h-3 rounded-lg bg-white opacity-50 w-16'></div>
-        <div className='inline-block ml-3 h-3 rounded-lg bg-white opacity-50 w-32'></div>
+        <div className='inline-block w-16 h-3 bg-white rounded-lg opacity-50'></div>
+        <div className='inline-block w-32 h-3 ml-3 bg-white rounded-lg opacity-50'></div>
       </div>
 
       <div className='px-6'>
-        <div className='inline-block h-12 rounded-lg bg-white opacity-50 w-32'></div>
-        <div className='inline-block ml-3 h-12 rounded-lg bg-white opacity-50 w-16'></div>
+        <div className='inline-block w-32 h-12 bg-white rounded-lg opacity-50'></div>
+        <div className='inline-block w-16 h-12 ml-3 bg-white rounded-lg opacity-50'></div>
       </div>
     </div>
 
@@ -51,7 +51,7 @@ export default ({ left, zIndex, scale, className, backgroundImage }) => (
       className='w-full h-full'
       style={{ background: 'rgba(255,255,255,0.5)' }}
     >
-      <div className='inline-block h-4 rounded-lg bg-gray-400 mt-8 ml-6 w-24'></div>
+      <div className='inline-block w-24 h-4 mt-8 ml-6 bg-gray-400 rounded-lg'></div>
     </div>
   </div>
 );

@@ -273,7 +273,7 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
     <div className='mx-auto text-center bg-white' style={{ width: '400px' }}>
       <div className='flex flex-col items-center pt-12'>
         <FaCode className='text-2xl text-black' />
-        <span className='typo-round text-2xl'>BrosCode</span>
+        <span className='text-2xl typo-round'>BrosCode</span>
       </div>
       {mode ? (
         <FormSignIn
@@ -297,7 +297,7 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
         />
       )}
       {mode ? (
-        <div className='mt-3 text-sm px-8 flex justify-between text-teal-700'>
+        <div className='flex justify-between px-8 mt-3 text-sm text-teal-700'>
           <span>Forgot Password?</span>
           <span
             className='cursor-pointer hover:underline'
@@ -307,10 +307,10 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
           </span>
         </div>
       ) : (
-        <div className='mt-3 text-sm px-8 text-center text-gray-500'>
+        <div className='px-8 mt-3 text-sm text-center text-gray-500'>
           Have an account?{' '}
           <span
-            className='cursor-pointer hover:underline text-teal-700'
+            className='text-teal-700 cursor-pointer hover:underline'
             onClick={() => setMode(true)}
           >
             Login
@@ -318,19 +318,19 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
         </div>
       )}
 
-      <div className='mx-auto pb-1 mt-2'>
-        <span className='text-center text-sm text-gray-500'>
+      <div className='pb-1 mx-auto mt-2'>
+        <span className='text-sm text-center text-gray-500'>
           or sign {mode ? 'up' : 'in'} with
         </span>
       </div>
 
-      <div className='flex justify-between px-8 mt-1 pb-16'>
+      <div className='flex justify-between px-8 pb-16 mt-1'>
         <FacebookLogin
           appId='297734224952735'
           callback={facebookLoginHandler}
           render={(renderProps) => (
             <button
-              className='text-blue-700 px-10 py-3 border-blue-700 border-2 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-300 focus:outline-none'
+              className='px-10 py-3 text-blue-700 border-2 border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-300 focus:outline-none'
               onClick={renderProps.onClick}
             >
               <FaFacebookF />
@@ -342,7 +342,7 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
           clientId='796130238984-t9jd9p7s9178cngceio9ctipia1rumfm.apps.googleusercontent.com'
           render={(renderProps) => (
             <button
-              className='text-red-700 px-10 py-3 border-red-700 border-2 rounded-lg hover:bg-red-700 hover:text-white transition-all duration-300 focus:outline-none'
+              className='px-10 py-3 text-red-700 border-2 border-red-700 rounded-lg hover:bg-red-700 hover:text-white transition-all duration-300 focus:outline-none'
               onClick={renderProps.onClick}
               disabled={renderProps.disabled}
             >
@@ -355,7 +355,7 @@ const AuthModal = ({ isLoginMode, history, updateUser, hideModal }) => {
           cookiePolicy={'single_host_origin'}
         />
 
-        <button className='text-black px-10 py-3 border-black border-2 rounded-lg hover:bg-black hover:text-white transition-all duration-300 focus:outline-none'>
+        <button className='px-10 py-3 text-black border-2 border-black rounded-lg hover:bg-black hover:text-white transition-all duration-300 focus:outline-none'>
           <FaGithub />
         </button>
       </div>

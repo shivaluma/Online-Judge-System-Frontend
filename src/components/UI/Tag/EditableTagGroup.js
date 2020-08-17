@@ -95,7 +95,7 @@ class EditableTagGroup extends React.Component {
 
           const tagElem = (
             <Tag
-              className='edit-tag flex items-center inline-flex'
+              className='flex inline-flex items-center edit-tag'
               key={tag}
               closable={true}
               onClose={() => this.handleClose(tag)}
@@ -139,7 +139,7 @@ class EditableTagGroup extends React.Component {
         )}
         {!inputVisible && (
           <Tag
-            className='site-tag-plus flex items-center inline-flex'
+            className='flex inline-flex items-center site-tag-plus'
             onClick={this.showInput}
           >
             <PlusOutlined /> New Tag

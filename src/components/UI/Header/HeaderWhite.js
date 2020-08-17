@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaCode } from 'react-icons/fa';
 const HeaderWhite = () => {
   return (
-    <div className='h-12 w-full flex px-3 items-center border border-gray-300'>
+    <div className='flex items-center w-full h-12 px-3 border border-gray-300'>
       <Link to='/'>
         <img
           src='https://assets.leetcode.com/static_assets/public/webpack_bundles/images/logo-dark.e99485d9b.svg'
@@ -12,7 +12,7 @@ const HeaderWhite = () => {
         />
       </Link>
 
-      <div className='ml-8 flex text-gray-600 text-sm'>
+      <div className='flex ml-8 text-sm text-gray-600'>
         <nav>
           <Link to='/problemset'>Problem</Link>
           <Link to='/discuss' className='ml-5'>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default () => (
-  <div className='h-screen w-screen relative'>
+  <div className='relative w-screen h-screen'>
     <div className='loader'>Loading...</div>
   </div>
 );

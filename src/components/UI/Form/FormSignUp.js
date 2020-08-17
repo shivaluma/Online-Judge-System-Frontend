@@ -47,14 +47,14 @@ export default ({
       />
 
       {wrongInfo.status && !loading ? (
-        <span className='mt-1 text-xs text-red-800 block text-left'>
+        <span className='block mt-1 text-xs text-left text-red-800'>
           {wrongInfo.description}
         </span>
       ) : null}
 
       <button
         type='submit'
-        className='w-full py-3 rounded-md bg-blue-600 mt-8 text-white text-sm hover:opacity-75 transition-all duration-300'
+        className='w-full py-3 mt-8 text-sm text-white bg-blue-600 rounded-md hover:opacity-75 transition-all duration-300'
         style={{
           background: 'linear-gradient(to right, #8e2de2, #4a00e0)',
         }}

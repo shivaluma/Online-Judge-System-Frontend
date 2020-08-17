@@ -121,14 +121,14 @@ const CommentWithAction = ({
     actions.push(
       <div
         key='comment-edit-delete'
-        className='group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex'
+        className='flex opacity-0 group-hover:opacity-100 transition-opacity duration-300'
       >
         <span className='text-xs cursor-pointer' onClick={() => {}}>
           <svg
             viewBox='0 0 24 24'
             width='1em'
             height='1em'
-            className='fill-current inline-block'
+            className='inline-block fill-current'
           >
             <path
               fillRule='evenodd'
@@ -145,12 +145,12 @@ const CommentWithAction = ({
           okText='Yes'
           cancelText='No'
         >
-          <span className='text-xs ml-3 cursor-pointer' onClick={() => {}}>
+          <span className='ml-3 text-xs cursor-pointer' onClick={() => {}}>
             <svg
               viewBox='0 0 24 24'
               width='1em'
               height='1em'
-              className='fill-current inline-block'
+              className='inline-block fill-current'
             >
               <path
                 fillRule='evenodd'
@@ -212,7 +212,7 @@ const CommentWithAction = ({
         </div>
       )}
       {loading ? (
-        <div className='h-32 flex items-center justify-center'>
+        <div className='flex items-center justify-center h-32'>
           <Spin size='large' />
         </div>
       ) : showChild ? (
@@ -233,7 +233,7 @@ const CommentWithAction = ({
 
           {childComments.length < commentData.subComment && (
             <div
-              className='text-md text-blue-600 flex items-center ml-5 focus:outline-none'
+              className='flex items-center ml-5 text-blue-600 text-md focus:outline-none'
               tabIndex={-1}
               onClick={() => loadChildCommentsHandler(commentData.id)}
             >

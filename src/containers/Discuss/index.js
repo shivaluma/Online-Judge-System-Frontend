@@ -162,9 +162,9 @@ const Discuss = (props) => {
 
   return (
     <div style={{ backgroundColor: 'rgb(245,245,245)' }}>
-      <Layout className='min-h-screen relative'>
-        <div className='container mt-8 flex'>
-          <div className='w-10/12 bg-white rounded-md border border-gray-300'>
+      <Layout className='relative min-h-screen'>
+        <div className='container flex mt-8'>
+          <div className='w-10/12 bg-white border border-gray-300 rounded-md'>
             {postData && (
               <Tabs
                 defaultActiveKey='3'
@@ -174,7 +174,7 @@ const Discuss = (props) => {
               >
                 <TabPane
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Description{' '}
                     </div>
                   }
@@ -189,7 +189,7 @@ const Discuss = (props) => {
                 <TabPane
                   disabled
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Solution{' '}
                     </div>
                   }
@@ -198,7 +198,7 @@ const Discuss = (props) => {
                 <TabPane
                   key='3'
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Discuss{' '}
                     </div>
                   }
@@ -206,7 +206,7 @@ const Discuss = (props) => {
                 ></TabPane>
                 <TabPane
                   tab={
-                    <div className='flex items-center w-32 justify-center text-sm'>
+                    <div className='flex items-center justify-center w-32 text-sm'>
                       <MdDescription className='mr-2' /> Submissions{' '}
                     </div>
                   }
@@ -221,14 +221,14 @@ const Discuss = (props) => {
               </Tabs>
             )}
 
-            <div className='text-xl py-2 px-5 text-black border-b border-gray-300'>
+            <div className='px-5 py-2 text-xl text-black border-b border-gray-300'>
               {postData
                 ? `${postData.id}. ${postData.title}`
                 : 'All Interview Questions'}
             </div>
-            <div className='border-b border-gray-300 flex items-center text-xs bg-gray-100'>
+            <div className='flex items-center text-xs bg-gray-100 border-b border-gray-300'>
               <Menu
-                className='w-2/3 text-md bg-gray-100'
+                className='w-2/3 bg-gray-100 text-md'
                 theme='light'
                 mode='horizontal'
                 onClick={(e) => {
@@ -243,7 +243,7 @@ const Discuss = (props) => {
               </Menu>
               <div className='ml-auto mr-3'>
                 <input
-                  className='px-2 py-1 rounded-md border border-gray-500'
+                  className='px-2 py-1 border border-gray-500 rounded-md'
                   placeholder='Search topics...'
                   value={query.search}
                   onChange={(event) =>
@@ -268,7 +268,7 @@ const Discuss = (props) => {
               ))}
 
             {isLoading && (
-              <div className='h-64 w-full flex items-center justify-center'>
+              <div className='flex items-center justify-center w-full h-64'>
                 <Spin size='large' />
               </div>
             )}
@@ -283,12 +283,12 @@ const Discuss = (props) => {
               />
             </div>
           </div>
-          <div className='w-3/12 bg-white rounded-md border border-gray-300 ml-2 self-start'>
-            <div className='text-md flex px-3 text-black border-b border-gray-300 h-12 items-center text-gray-700 border-b border-gray-200'>
+          <div className='self-start w-3/12 ml-2 bg-white border border-gray-300 rounded-md'>
+            <div className='flex items-center h-12 px-3 text-black text-gray-700 border-b border-gray-200 border-gray-300 text-md'>
               Tags
             </div>
             <div className='px-3 py-4'>
-              <div className='flex mb-3 max-w-full flex-wrap'>
+              <div className='flex flex-wrap max-w-full mb-3'>
                 {tagSelect.map((tag, index) => (
                   <TagWithCount
                     key={tag}
@@ -304,7 +304,7 @@ const Discuss = (props) => {
                 onChange={(event) => setTagQuery(event.target.value)}
                 className='w-full py-1 rounded-md'
               />
-              <div className='flex mt-4 max-w-full flex-wrap'>
+              <div className='flex flex-wrap max-w-full mt-4'>
                 {!isTagLoading &&
                   tagData.tags.map((tag) => (
                     <TagWithCount
@@ -316,7 +316,7 @@ const Discuss = (props) => {
                   ))}
 
                 {isTagLoading && (
-                  <div className='h-64 w-full flex items-center justify-center'>
+                  <div className='flex items-center justify-center w-full h-64'>
                     <Spin size='large' />
                   </div>
                 )}

@@ -3,19 +3,19 @@ import { FaCaretUp, FaCommentDots } from 'react-icons/fa';
 import Avatar from '../UI/Avatar';
 const TrendingPost = () => {
   return (
-    <div className='flex w-full py-3 border-t border-gray-200 hover:shadow-lg transform duration-300 hover:-translate-y-1 cursor-pointer'>
-      <div className='w-16 flex flex-col items-center'>
+    <div className='flex w-full py-3 border-t border-gray-200 cursor-pointer hover:shadow-lg transform duration-300 hover:-translate-y-1'>
+      <div className='flex flex-col items-center w-16'>
         <FaCaretUp />
         <span className='text-sm font-bold'>193</span>
       </div>
-      <div className='w-full pl-2 flex flex-col'>
+      <div className='flex flex-col w-full pl-2'>
         <div className='flex items-center'>
-          <Avatar className='h-8 w-8' isRound size={8} />
+          <Avatar className='w-8 h-8' isRound size={8} />
           <div className='flex flex-col ml-3'>
             <h2 className='text-xl text-black'>
               Google - Intern Software Engineer
             </h2>
-            <span className='text-gray-800 text-xs'>
+            <span className='text-xs text-gray-800'>
               posted by shiro 2 days ago.
             </span>
           </div>

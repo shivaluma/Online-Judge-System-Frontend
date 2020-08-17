@@ -161,12 +161,12 @@ const SocialAuth = (props) => {
       <Header />
 
       <div
-        className='mt-32 mx-auto text-center bg-white py-12'
+        className='py-12 mx-auto mt-32 text-center bg-white'
         style={{ width: '400px' }}
       >
         <div className='flex flex-col items-center '>
           <FaCode className='text-2xl text-black' />
-          <span className='typo-round text-2xl'>BrosCode</span>
+          <span className='text-2xl typo-round'>BrosCode</span>
         </div>
         <span className='text-sm text-gray-700'>
           To finish registration by social account, please choose a username.

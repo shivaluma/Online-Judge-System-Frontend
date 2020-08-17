@@ -20,7 +20,7 @@ export default () => (
   <div>
     <div className='relative' style={{ height: '760px', marginTop: '-80px' }}>
       <div
-        className='transform w-full h-full bg-green-300 skew-y-12 absolute top-0 left-0'
+        className='absolute top-0 left-0 w-full h-full transform skew-y-12 bg-green-300'
         style={{
           transformOrigin: '100%',
           background:
@@ -29,15 +29,15 @@ export default () => (
         }}
       ></div>
       {/* NavBar */}
-      <div className='absolute pt-4 w-full' style={{ top: '80px' }}>
-        <div className='h-24 w-full'>
+      <div className='absolute w-full pt-4' style={{ top: '80px' }}>
+        <div className='w-full h-24'>
           <div className='container flex justify-between'>
             <div className='text-xl font-normal text-white typo-round'>
               BrosCode
             </div>
             <nav className='flex'>
-              <NavButton text='Premium' to='/premium' color='#fea116' />
-              <NavButton text='Explore' to='/premium' color='#fff' />
+              <NavButton text='Premium' to='/' color='#fea116' />
+              <NavButton text='Explore' to='/problemset' color='#fff' />
               <NavButton text='Discuss' to='/discuss' color='#fff' />
               <NavButton text='Sign In' to='/accounts/login' color='#fff' />
             </nav>
@@ -45,7 +45,7 @@ export default () => (
         </div>
 
         <FaJava
-          className='z-10 absolute text-gray-600 opacity-50'
+          className='absolute z-10 text-gray-600 opacity-50'
           style={{
             top: '100px',
             left: '20px',
@@ -55,7 +55,7 @@ export default () => (
         />
 
         <FaJs
-          className='z-10 absolute text-gray-600 opacity-50'
+          className='absolute z-10 text-gray-600 opacity-50'
           style={{
             top: '80px',
             right: '50px',
@@ -65,7 +65,7 @@ export default () => (
         />
 
         <FaPython
-          className='z-10 absolute text-gray-600 opacity-50'
+          className='absolute z-10 text-gray-600 opacity-50'
           style={{
             top: '280px',
             right: '150px',
@@ -75,7 +75,7 @@ export default () => (
         />
 
         <CppSvg
-          className='z-10 absolute h-32 w-32 text-gray-600 fill-current opacity-50'
+          className='absolute z-10 w-32 h-32 text-gray-600 opacity-50 fill-current'
           style={{
             top: '70px',
             left: '180px',
@@ -88,7 +88,7 @@ export default () => (
         <div className='container flex'>
           <div className='lg:w-1/2'>
             <div
-              className='mt-20 w-88 h-64 bg-white shadow-lg relative'
+              className='relative h-64 mt-20 bg-white shadow-lg w-88'
               style={{
                 transform: 'rotate(-8deg)',
                 height: '284px',
@@ -98,7 +98,7 @@ export default () => (
               }}
             >
               <div
-                className='relative m-auto rounded-md border border-gray-300 flex'
+                className='relative flex m-auto border border-gray-300 rounded-md'
                 style={{
                   top: '8px',
                   width: 'calc(100% - 38px*2)',
@@ -106,8 +106,8 @@ export default () => (
                 }}
               >
                 <div className='w-9/12 p-1'>
-                  <div className='bg-gray-200 p-1 w-full flex rounded-md'>
-                    <div className='flex h-20 p-1 w-1/4'>
+                  <div className='flex w-full p-1 bg-gray-200 rounded-md'>
+                    <div className='flex w-1/4 h-20 p-1'>
                       <div
                         className='w-full h-full bg-green-400 rounded-lg'
                         style={{
@@ -116,7 +116,7 @@ export default () => (
                         }}
                       ></div>
                     </div>
-                    <div className='flex h-20 p-1 w-1/4'>
+                    <div className='flex w-1/4 h-20 p-1'>
                       <div
                         className='w-full h-full bg-red-400 rounded-lg'
                         style={{
@@ -125,7 +125,7 @@ export default () => (
                         }}
                       ></div>
                     </div>
-                    <div className='flex h-20 p-1 w-1/4'>
+                    <div className='flex w-1/4 h-20 p-1'>
                       <div
                         className='w-full h-full bg-blue-400 rounded-lg'
                         style={{
@@ -134,7 +134,7 @@ export default () => (
                         }}
                       ></div>
                     </div>
-                    <div className='flex h-20 p-1 w-1/4'>
+                    <div className='flex w-1/4 h-20 p-1'>
                       <div
                         className='w-full h-full bg-orange-400 rounded-lg'
                         style={{
@@ -146,10 +146,10 @@ export default () => (
                   </div>
 
                   <div
-                    className='mt-2 p-2 w-full rounded-lg border border-gray-300'
+                    className='w-full p-2 mt-2 border border-gray-300 rounded-lg'
                     style={{ height: 'calc(100% - 100px)' }}
                   >
-                    <div className='border-b border-gray-200 p-2'>
+                    <div className='p-2 border-b border-gray-200'>
                       <ListObj width={'34px'} />
                       <ListObj width={'72px'} red />
                       <ListObj width={'67px'} red />
@@ -161,17 +161,17 @@ export default () => (
                   </div>
                 </div>
                 <div className='w-3/12 p-1'>
-                  <div className='w-full h-full rounded-md border border-gray-300 p-1'>
-                    <div className='h-4 w-full bg-gray-200 rounded-t-lg'></div>
+                  <div className='w-full h-full p-1 border border-gray-300 rounded-md'>
+                    <div className='w-full h-4 bg-gray-200 rounded-t-lg'></div>
                     <div className='p-1'>
                       <div
-                        className='rounded-full bg-blue-200 mx-auto'
+                        className='mx-auto bg-blue-200 rounded-full'
                         style={{ height: '60px', width: '60px' }}
                       ></div>
                     </div>
-                    <div className='h-4 w-full bg-gray-200 rounded-b-lg'></div>
+                    <div className='w-full h-4 bg-gray-200 rounded-b-lg'></div>
                     <div
-                      className='bg-gray-400 mt-3 obj-animation'
+                      className='mt-3 bg-gray-400 obj-animation'
                       style={{
                         height: '5px',
                         width: '24px',
@@ -179,7 +179,7 @@ export default () => (
                       }}
                     ></div>
                     <div
-                      className='bg-gray-400 mt-3 obj-animation-d-1'
+                      className='mt-3 bg-gray-400 obj-animation-d-1'
                       style={{
                         height: '5px',
                         width: '65px',
@@ -187,7 +187,7 @@ export default () => (
                       }}
                     ></div>
                     <div
-                      className='bg-gray-400 mt-3 obj-animation-d-3'
+                      className='mt-3 bg-gray-400 obj-animation-d-3'
                       style={{
                         height: '5px',
                         width: '45px',
@@ -195,7 +195,7 @@ export default () => (
                       }}
                     ></div>
                     <div
-                      className='bg-gray-400 mt-3'
+                      className='mt-3 bg-gray-400'
                       style={{
                         height: '5px',
                         width: '24px',
@@ -203,7 +203,7 @@ export default () => (
                       }}
                     ></div>
                     <div
-                      className='bg-gray-400 mt-3 obj-animation-d-1'
+                      className='mt-3 bg-gray-400 obj-animation-d-1'
                       style={{
                         height: '5px',
                         width: '24px',
@@ -211,7 +211,7 @@ export default () => (
                       }}
                     ></div>
                     <div
-                      className='bg-gray-400 mt-3 obj-animation-d-2'
+                      className='mt-3 bg-gray-400 obj-animation-d-2'
                       style={{
                         height: '5px',
                         width: '33px',
@@ -225,8 +225,8 @@ export default () => (
           </div>
           {/* Create Account */}
           <div className='lg:w-1/2'>
-            <div className='mt-24 mx-auto text-center'>
-              <h3 className='font-semibold text-4xl text-white capitalize w-full'>
+            <div className='mx-auto mt-24 text-center'>
+              <h3 className='w-full text-4xl font-semibold text-white capitalize'>
                 A new way to learn
               </h3>
               <p className='mt-8 text-lg text-gray-500'>
@@ -235,26 +235,26 @@ export default () => (
               </p>
 
               <Link to='/accounts/signup'>
-                <div className='px-6 py-2 mt-8 bg-blue-600 rounded-full text-white focus:outline-none w-48 mx-auto flex items-center'>
+                <div className='flex items-center w-48 px-6 py-2 mx-auto mt-8 text-white bg-blue-600 rounded-full focus:outline-none'>
                   <span>Create Account</span>
-                  <FaAngleRight className='ml-2 inline-block text-xl' />
+                  <FaAngleRight className='inline-block ml-2 text-xl' />
                 </div>
               </Link>
             </div>
           </div>
         </div>
-        <div className='flex container mt-40'>
-          <div className='lg:w-1/2 text-right'>
+        <div className='container flex mt-40'>
+          <div className='text-right lg:w-1/2'>
             <div className='flex items-center justify-end'>
               <span className='text-2xl text-teal-700'>Start Exploring!</span>
-              <div className='badge teal transform scale-75'>
+              <div className='transform scale-75 badge teal'>
                 <div className='circle'>
                   <FaGraduationCap className='mt-3 ml-3 fa-icon' />
                 </div>
               </div>
             </div>
             <p
-              className='text-base text-gray-600 mt-4 leading-loose'
+              className='mt-4 text-base leading-loose text-gray-600'
               style={{ textIndent: '5rem' }}
             >
               Explore is a well-organized tool that helps you get the most out
@@ -263,11 +263,11 @@ export default () => (
             </p>
           </div>
           <div
-            className='lg:w-1/2 relative mr-0 ml-auto'
+            className='relative ml-auto mr-0 lg:w-1/2'
             style={{ perspective: '600px', height: '300px', width: '260px' }}
           >
             <div
-              className='absolute h-full w-full'
+              className='absolute w-full h-full'
               style={{ transformOrigin: '0 50%' }}
             >
               <Card
@@ -281,7 +281,7 @@ export default () => (
               />
             </div>
             <div
-              className='absolute h-full w-full'
+              className='absolute w-full h-full'
               style={{ transformOrigin: '0 50%' }}
             >
               <Card
@@ -295,7 +295,7 @@ export default () => (
               />
             </div>
             <div
-              className='absolute h-full w-full'
+              className='absolute w-full h-full'
               style={{ transformOrigin: '0 50%' }}
             >
               <Card
@@ -311,33 +311,33 @@ export default () => (
           </div>
         </div>
 
-        <div className='flex container mt-40'>
-          <div className='lg:w-1/2 mr-20'>
-            <div className='w-full relative'>
-              <div className='badge orange transform scale-75'>
+        <div className='container flex mt-40'>
+          <div className='mr-20 lg:w-1/2'>
+            <div className='relative w-full'>
+              <div className='transform scale-75 badge orange'>
                 <div className='circle'>
                   <FaQuestion className='mt-3 ml-3 fa-icon' />
                 </div>
               </div>
 
-              <div className='badge purple transform scale-75 -translate-x-12'>
+              <div className='transform scale-75 -translate-x-12 badge purple'>
                 <div className='circle'>
                   <FaUsers className='mt-3 ml-3 fa-icon' />
                 </div>
               </div>
 
-              <div className='badge blue transform scale-75 -translate-x-24'>
+              <div className='transform scale-75 -translate-x-24 badge blue'>
                 <div className='circle'>
                   <FaTrophy className='mt-3 ml-3 fa-icon' />
                 </div>
               </div>
             </div>
 
-            <h3 className='text-2xl text-blue-500 block'>
+            <h3 className='block text-2xl text-blue-500'>
               Questions, Community & Contests
             </h3>
 
-            <p className='text-md text-gray-800 leading-loose mt-3'>
+            <p className='mt-3 leading-loose text-gray-800 text-md'>
               Over 1550 questions for you to practice. Come and join one of the
               largest tech communities with hundreds of thousands of active
               users and participate in our contests to challenge yourself and
@@ -347,18 +347,18 @@ export default () => (
 
           {/* END */}
 
-          <div className='lg:w-1/2 mr-16'>
-            <div className='w-full relative'>
-              <div className='badge green transform scale-75'>
+          <div className='mr-16 lg:w-1/2'>
+            <div className='relative w-full'>
+              <div className='transform scale-75 badge green'>
                 <div className='circle'>
                   <FaCode className='mt-3 ml-3 fa-icon' />
                 </div>
               </div>
             </div>
 
-            <h3 className='text-2xl text-blue-500 block'>Developer</h3>
+            <h3 className='block text-2xl text-blue-500'>Developer</h3>
 
-            <p className='text-md text-gray-800 leading-loose mt-3'>
+            <p className='mt-3 leading-loose text-gray-800 text-md'>
               We now support 14 popular coding languages. At our core, BrosCode
               is about developers. Our powerful development tools such as
               Playground help you test, debug and even write your own projects
@@ -367,14 +367,14 @@ export default () => (
           </div>
         </div>
         <div
-          className='mt-40 w-full relative'
+          className='relative w-full mt-40'
           style={{
             background:
               'linear-gradient(-150deg, #222222 15%, #373737 70%, #3c4859 94%)',
           }}
         >
           <div
-            className='badge red transform absolute'
+            className='absolute transform badge red'
             style={{
               top: 0,
               left: '49%',
@@ -385,14 +385,14 @@ export default () => (
               <FaHeart className='mt-3 ml-3 fa-icon' />
             </div>
           </div>
-          <div className='text-gray-300 w-1/4 mx-auto text-center -mt-4'>
+          <div className='w-1/4 mx-auto -mt-4 text-center text-gray-300'>
             At BrosCode, our mission is to help you improve yourself and land
             your dream job. We have a sizable repository of interview resources
             for many companies. In the past few years, our users have landed
             jobs at top companies around the world.
           </div>
 
-          <div className='mt-24 w-full px-16 py-6 border-gray-300 flex justify-between text-white'>
+          <div className='flex justify-between w-full px-16 py-6 mt-24 text-white border-gray-300'>
             <span>&copy; Brogrammers 2020.</span>
             <div>About us</div>
           </div>

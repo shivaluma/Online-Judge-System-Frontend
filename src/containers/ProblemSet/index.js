@@ -4,7 +4,7 @@ import { AiOutlineFileText } from 'react-icons/ai';
 import Header from '../../components/UI/Header';
 import Footer from '../../components/UI/Footer';
 import { Select } from 'antd';
-
+import { useDebounce } from 'use-debounce';
 import AlgorithmImage from '../../assets/images/algorithm.png';
 import DatabaseImage from '../../assets/images/database.png';
 import ShellImage from '../../assets/images/shell.png';
@@ -16,33 +16,35 @@ const ProblemSet = () => {
   const [pageNum, setPageNum] = useState(1);
   const [difficulty, setDifficulty] = useState('');
   const [hasSolution, setHasSolution] = useState('');
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchQuery] = useDebounce(search, 300);
   useEffect(() => {
     setLoading(true);
     (async function () {
       const response = await API.get(
-        `/problem/list?page=${pageNum}&difficulty=${difficulty}&hasSolution=${hasSolution}`
+        `/problem/list?page=${pageNum}&searchQuery=${searchQuery}&difficulty=${difficulty}&hasSolution=${hasSolution}`
       );
 
       setProblemList(response.data.problems);
       setLoading(false);
     })();
-  }, [pageNum, difficulty, hasSolution, setLoading]);
+  }, [pageNum, difficulty, hasSolution, setLoading, searchQuery]);
   return (
     <>
       <Header />
       <div className='container my-8'>
-        <div className='flex text-xl font-light items-center'>
+        <div className='flex items-center text-xl font-light'>
           <FaThLarge /> <span className='ml-2'>Category - All</span>
         </div>
 
-        <div className='mt-4 flex'>
+        <div className='flex mt-4'>
           <div
-            className='h-24 w-32 rounded-lg'
+            className='w-32 h-24 rounded-lg'
             style={{ background: 'linear-gradient(#f7dc58, #fea116)' }}
           >
             <div
-              className='w-full h-full bg-cover text-center flex items-center justify-center text-white cursor-pointer'
+              className='flex items-center justify-center w-full h-full text-center text-white bg-cover cursor-pointer'
               style={{
                 backgroundImage: `url(${AlgorithmImage})`,
               }}
@@ -51,11 +53,11 @@ const ProblemSet = () => {
             </div>
           </div>
           <div
-            className='h-24 w-32 rounded-lg ml-5 cursor-not-allowed'
+            className='w-32 h-24 ml-5 rounded-lg cursor-not-allowed'
             style={{ background: 'linear-gradient(#70def7, #106afe)' }}
           >
             <div
-              className='w-full h-full bg-cover text-center flex items-center justify-center text-white'
+              className='flex items-center justify-center w-full h-full text-center text-white bg-cover'
               style={{
                 backgroundImage: `url(${DatabaseImage})`,
               }}
@@ -64,11 +66,11 @@ const ProblemSet = () => {
             </div>
           </div>
           <div
-            className='h-24 w-32 rounded-lg ml-5'
+            className='w-32 h-24 ml-5 rounded-lg'
             style={{ background: 'linear-gradient(#8eeb98, #449d44)' }}
           >
             <div
-              className='w-full h-full bg-cover text-center flex items-center justify-center text-white cursor-not-allowed'
+              className='flex items-center justify-center w-full h-full text-center text-white bg-cover cursor-not-allowed'
               style={{
                 backgroundImage: `url(${ShellImage})`,
               }}
@@ -78,41 +80,43 @@ const ProblemSet = () => {
           </div>
         </div>
 
-        <div className='mt-6 border-t py-5'>
+        <div className='py-5 mt-6 border-t'>
           <div
-            className='rounded-full font-semibold bg-blue-700 inline-block text-white px-2'
+            className='inline-block px-2 font-semibold text-white bg-blue-700 rounded-full'
             style={{ fontSize: '12px' }}
           >
             12/56 Solved
           </div>
           <span className='px-2 py-1 text-gray-700'>&nbsp;-&nbsp;</span>
           <div
-            className='rounded-full font-semibold bg-green-500 inline-block text-white px-2 mr-1'
+            className='inline-block px-2 mr-1 font-semibold text-white bg-green-500 rounded-full'
             style={{ fontSize: '12px' }}
           >
             Easy 12
           </div>
           <div
-            className='rounded-full font-semibold bg-orange-500 inline-block text-white px-2 mr-1'
+            className='inline-block px-2 mr-1 font-semibold text-white bg-orange-500 rounded-full'
             style={{ fontSize: '12px' }}
           >
             Medium 12
           </div>
           <div
-            className='rounded-full font-semibold bg-red-500 inline-block text-white px-2 mr-1'
+            className='inline-block px-2 mr-1 font-semibold text-white bg-red-500 rounded-full'
             style={{ fontSize: '12px' }}
           >
             Hard 12
           </div>
         </div>
 
-        <div className='mt-5 border-t pt-5'>
+        <div className='pt-5 mt-5 border-t'>
           <div className='flex items-center'>
             <input
               placeholder='Search question titles or IDs '
-              className='flex-grow rounded-full border border-gray-400 outline-none py-1 px-3'
+              className='flex-grow px-3 py-1 border border-gray-400 rounded-full outline-none'
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
             />
-            <AiOutlineFileText className='text-xl mx-2' />
+            <AiOutlineFileText className='mx-2 text-xl' />
             <Select
               className='rounded-full'
               defaultValue='Difficulty'
@@ -124,7 +128,7 @@ const ProblemSet = () => {
               <Option value='hard'>Hard</Option>
             </Select>
             <Select
-              className='rounded-full ml-3'
+              className='ml-3 rounded-full'
               defaultValue='Tags'
               style={{ width: 120 }}
               onChange={(value) => {}}
@@ -135,7 +139,7 @@ const ProblemSet = () => {
             </Select>
           </div>
         </div>
-        <div className='mt-5 border-t border-gray-200 py-5'>
+        <div className='py-5 mt-5 border-t border-gray-200'>
           <ProblemTable problems={problemList} loading={loading} />
         </div>
       </div>

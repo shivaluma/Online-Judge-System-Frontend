@@ -18,7 +18,7 @@ const CommentEditor = ({
   const [loadUserDebounce] = useDebouncedCallback(loadUser, 300);
 
   return (
-    <div className='m-4 flex'>
+    <div className='flex m-4'>
       <Mentions
         className='outline-none rounded-l-md hover:outline-none'
         rows={2}
@@ -38,22 +38,22 @@ const CommentEditor = ({
         ))}
       </Mentions>
 
-      <div className='w-16 rounded-r-md border-t border-r border-b border-gray-400 flex flex-col items-center overflow-hidden'>
+      <div className='flex flex-col items-center w-16 overflow-hidden border-t border-b border-r border-gray-400 rounded-r-md'>
         {disabled ? (
           <button
-            className='text-xs py-1 border-b border-gray-400 w-full focus:outline-none disabled:text-gray-200'
+            className='w-full py-1 text-xs border-b border-gray-400 focus:outline-none disabled:text-gray-200'
             onClick={toggleEditor}
           >
             Cancel
           </button>
         ) : (
-          <button className='text-xs py-1 border-b border-gray-400 w-full focus:outline-none disabled:text-gray-200'>
+          <button className='w-full py-1 text-xs border-b border-gray-400 focus:outline-none disabled:text-gray-200'>
             View
           </button>
         )}
 
         <button
-          className='text-xs py-1 flex-grow w-full text-white focus:outline-none'
+          className='flex-grow w-full py-1 text-xs text-white focus:outline-none'
           style={{
             background: 'linear-gradient(35deg, #546e7a, #37474f)',
           }}
